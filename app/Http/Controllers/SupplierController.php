@@ -6,6 +6,7 @@ use App\Helpers\Helper;
 use App\Http\Requests\StoreSupplierRequest;
 use App\Http\Requests\UpdateSupplierRequest;
 use App\Models\Supplier;
+use PDF;
 
 class SupplierController extends Controller
 {
@@ -124,4 +125,13 @@ class SupplierController extends Controller
         $suppDEL->each->delete();
         return redirect('/Supplier')->with('hapusSupplier', 'Data Supplier Berhasil Dihapus!');
     }
+    public function PDF()
+    {
+        $Supplier = Supplier::all();
+        // dd($Supplier);
+
+        $pdf = PDF::loadView('Laporan.Supplier', ['supplier' => $Supplier])->setOptions(['defaultFont' => 'sans-serif']);
+        return $pdf->stream('Supplier.pdf');
+    }
+
 }

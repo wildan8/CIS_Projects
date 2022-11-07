@@ -9,6 +9,7 @@
                 {{ session('statusSupplier') }}
             </div>
         @endif
+
         @if (session()->has('hapusSupplier'))
             <div class="alert alert-danger">
                 {{ session('hapusSupplier') }}
@@ -20,7 +21,12 @@
             </div>
         @endif
         <div>
-            <a href="/Supplier/createSUP" class="btn btn-icon icon-left btn-primary"><i class="far fa-edit"></i> Tambah
+            <a href="/Supplier/createSUP" class="btn btn-icon icon-left btn-primary m-2"><i class="far fa-edit"></i> Tambah
+                Data</a>
+        </div>
+
+        <div>
+            <a href="/Supplier/exportSUP" class="btn btn-icon icon-left btn-primary m-2"><i class="far fa-edit"></i> Export
                 Data</a>
         </div>
         <div class="section-body">

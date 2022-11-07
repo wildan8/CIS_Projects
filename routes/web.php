@@ -41,6 +41,7 @@ Route::middleware(['auth', 'role:Gudang'])->group(function () {
         Route::get('/createSUP', 'SupplierController@create')->name('create');
         Route::POST('/storeSUP', 'SupplierController@store')->name('store');
         Route::get('/editSUP/{ID_Supplier}', 'SupplierController@edit')->name('edit');
+        Route::get('/exportSUP', 'SupplierController@PDF')->name('export');
         Route::POST('/updateSUP', 'SupplierController@update')->name('update');
         Route::get('/deleteSUP/{ID_Supplier}', 'SupplierController@destroy')->name('destroy');
     });

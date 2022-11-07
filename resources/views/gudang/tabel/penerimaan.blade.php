@@ -20,7 +20,7 @@
             </div>
         @endif
         <div>
-            <a href="/LOG/createLOG" class="btn btn-icon icon-left btn-primary"><i class="far fa-edit"></i> Tambah Data</a>
+            <a href="/LOG/createLOG" class="btn btn-icon icon-left btn-primary m-2"><i class="far fa-edit"></i> Tambah Data</a>
         </div>
 
 

@@ -47,7 +47,7 @@ class BOMController extends Controller
             'Produk_ID' => 'required',
             'BahanBaku_ID' => 'required',
             'Ukuran_Produk' => 'required',
-            'Jumlah_BOM' => 'required',
+            'Jumlah_BOM' => 'required|integer',
         ]);
 
         $Kode_BOM = Helper::IDGenerator(new Bom, 'ID_BOM', 'Kode_BOM', 2, $request->Produk_ID . $request->BahanBaku_ID . $request->Ukuran_Produk);

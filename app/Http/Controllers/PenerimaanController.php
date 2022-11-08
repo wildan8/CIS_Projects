@@ -8,6 +8,7 @@ use App\Http\Requests\UpdatePenerimaanRequest;
 use App\Models\BahanBaku;
 use App\Models\Penerimaan;
 use Illuminate\Support\Facades\DB;
+use PDF;
 
 class PenerimaanController extends Controller
 {
@@ -143,5 +144,15 @@ class PenerimaanController extends Controller
         } else {
             return back();
         }
+    }
+    public function PDF()
+    {
+        $data = Penerimaan::all();
+        // dd($Penerimaan);
+        $Judul = 'List Data Penerimaan';
+        $Tanggal = date('Y-m-d H:i:s');
+        $Jumlah = Penerimaan::count();
+        $pdf = PDF::loadView('Laporan.LOG', compact('data', 'Judul', 'Tanggal', 'Jumlah'))->setOptions(['defaultFont' => 'sans-serif']);
+        return $pdf->stream('LIST DATA PENERIMAAN-' . date('ymd') . '.pdf');
     }
 }

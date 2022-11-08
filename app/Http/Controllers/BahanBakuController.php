@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateBahanBakuRequest;
 use App\Models\BahanBaku;
 use App\Models\Supplier;
 use Illuminate\Support\Facades\DB;
+use PDF;
 
 class BahanBakuController extends Controller
 {
@@ -116,5 +117,15 @@ class BahanBakuController extends Controller
         // dd($ID_BahanBaku);
         $BBdel->each->delete();
         return redirect('/Bahanbaku')->with('status', 'YAY! Data Berhasil Dihapus!');
+    }
+    public function PDF()
+    {
+        $data = BahanBaku::with('Supplier')->get();
+        // dd($BahanBaku);
+        $Judul = 'List Data BahanBaku';
+        $Tanggal = date('Y-m-d H:i:s');
+        $Jumlah = BahanBaku::count();
+        $pdf = PDF::loadView('Laporan.BahanBaku', compact('data', 'Judul', 'Tanggal', 'Jumlah'))->setOptions(['defaultFont' => 'sans-serif']);
+        return $pdf->stream('LIST DATA BAHAN BAKU-' . date('ymd') . '.pdf');
     }
 }

@@ -52,6 +52,10 @@
             padding: 10px;
         }
 
+        .rincian table {
+            padding: 15px;
+        }
+
     </style>
 
 </head>
@@ -64,12 +68,9 @@
 
                     <pre>
 
+<bold>Judul Dokumen        :</bold> {{$Judul }}
+<bold>Tanggal Pembuatan :</bold> {{$Tanggal}}
 
-
-
-<bold>Judul:</bold> {{$Judul }}
-<bold>Tanggal Pembuatan:</bold> {{$Tanggal}}
-<bold>Jumlah Data:</bold> {{$Jumlah}}
                     </pre>
                 </td>
                 <td align="center">
@@ -89,31 +90,38 @@
 
         </table>
     </div>
+    <div class="rincian">
+        <table>
+            <tr>
+                <td align="left" style="width: 35%;">
+                    Nama Produk :{{$Produk->Nama_Produk }} <br>
+                    Ukuran Produk : {{$Produk->Ukuran_Produk}} <br>
+                    Jumlah Data : {{$Jumlah}}
+                </td>
+            </tr>
+        </table>
+    </div>
     <div class="invoice">
-        <h3>List Data</h3>
+
         <table width="95%" border="1">
             <thead>
                 <tr>
                     <th scope="col">No</th>
-                    <th scope="col">Kode Supplier</th>
-                    <th scope="col">Nama Usaha</th>
-                    <th scope="col">Pemilik Usaha</th>
-                    <th scope="col">Alamat Usaha</th>
-                    <th scope="col">Nomor Telepon</th>
+                    <th scope="col">Kode Bahan Baku</th>
+                    <th scope="col">Nama Bahan Baku</th>
+                    <th scope="col">Jumlah</th>
                 </tr>
             </thead>
             <tbody align="center">
                 @php
                 $no =1;
                 @endphp
-                @foreach ($data as $supplier)
+                @foreach ($data as$data)
                 <tr>
                     <td>{{ $no++ }}</td>
-                    <td>{{ $supplier->Kode_Supplier }}</td>
-                    <td>{{ $supplier->Nama_Supplier }}</td>
-                    <td> {{ $supplier->Pemilik_Supplier }} </td>
-                    <td> {{ $supplier->Alamat_Supplier }} </td>
-                    <td> {{ $supplier->Telp_Supplier }} </td>
+                    <td>{{$data->Kode_BOM }}</td>
+                    <td>{{$data->BahanBaku->Nama_BahanBaku }}</td>
+                    <td> {{$data->Jumlah_BOM }} </td>
                 </tr>
                 @endforeach
             </tbody>

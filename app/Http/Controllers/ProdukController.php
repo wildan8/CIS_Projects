@@ -6,6 +6,7 @@ use App\Http\Requests\StoreProdukRequest;
 use App\Http\Requests\UpdateProdukRequest;
 use App\Models\Produk;
 use Illuminate\Support\Facades\DB;
+use PDF;
 
 class ProdukController extends Controller
 {
@@ -116,5 +117,15 @@ class ProdukController extends Controller
         $produkDEL = Produk::find($ID_Produk);
         $produkDEL->each->delete();
         return redirect('/produk')->with('statusProduk', 'Hapus Data Produk Berhasil!');
+    }
+    public function PDF()
+    {
+        $data = Produk::all();
+        // dd($Produk);
+        $Judul = 'List Data Produk';
+        $Tanggal = date('Y-m-d H:i:s');
+        $Jumlah = Produk::count();
+        $pdf = PDF::loadView('Laporan.Produk', compact('data', 'Judul', 'Tanggal', 'Jumlah'))->setOptions(['defaultFont' => 'sans-serif']);
+        return $pdf->stream('LIST DATA Produk-' . date('ymd') . '.pdf');
     }
 }

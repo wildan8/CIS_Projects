@@ -127,12 +127,12 @@ class SupplierController extends Controller
     }
     public function PDF()
     {
-        $Supplier = Supplier::all();
+        $data = Supplier::all();
         // dd($Supplier);
         $Judul = 'List Data Supplier';
         $Tanggal = date('Y-m-d H:i:s');
         $Jumlah = Supplier::count();
-        $pdf = PDF::loadView('Laporan.Supplier', compact('Supplier', 'Judul', 'Tanggal', 'Jumlah'))->setOptions(['defaultFont' => 'sans-serif']);
+        $pdf = PDF::loadView('Laporan.Supplier', compact('data', 'Judul', 'Tanggal', 'Jumlah'))->setOptions(['defaultFont' => 'sans-serif']);
         return $pdf->stream('LIST DATA SUPPLIER-' . date('ymd') . '.pdf');
     }
 

@@ -41,7 +41,7 @@ Route::middleware(['auth', 'role:Gudang'])->group(function () {
         Route::get('/createSUP', 'SupplierController@create')->name('create');
         Route::POST('/storeSUP', 'SupplierController@store')->name('store');
         Route::get('/editSUP/{ID_Supplier}', 'SupplierController@edit')->name('edit');
-        Route::get('/exportSUP', 'SupplierController@PDF')->name('export');
+        Route::get('/export', 'SupplierController@PDF')->name('export');
         Route::POST('/updateSUP', 'SupplierController@update')->name('update');
         Route::get('/deleteSUP/{ID_Supplier}', 'SupplierController@destroy')->name('destroy');
     });
@@ -52,6 +52,7 @@ Route::middleware(['auth', 'role:Gudang'])->group(function () {
         Route::get('/createBB', 'BahanBakuController@create')->name('create');
         Route::POST('/storeBB', 'BahanBakuController@store')->name('store');
         Route::get('/editBB/{ID_BahanBaku}', 'BahanBakuController@test')->name('test');
+        Route::get('/export', 'BahanBakuController@PDF')->name('export');
         Route::POST('/perbaru', 'BahanBakuController@update')->name('update');
         Route::get('/deleteBB/{ID_BahanBaku}', 'BahanBakuController@destroy')->name('destroy');
     });
@@ -62,6 +63,7 @@ Route::middleware(['auth', 'role:Gudang'])->group(function () {
         Route::get('/createLOG', 'PenerimaanController@create')->name('create');
         Route::POST('/storeLOG', 'PenerimaanController@store')->name('store');
         Route::get('/editLOG/{ID_LOG}', 'PenerimaanController@edit')->name('edit');
+        Route::get('/export', 'PenerimaanController@PDF')->name('export');
         Route::POST('/updateLOG', 'PenerimaanController@update')->name('update');
         Route::get('/deleteLOG/{ID_LOG}', 'PenerimaanController@destroy')->name('destroy');
     });
@@ -81,6 +83,7 @@ Route::middleware(['auth', 'role:Produksi'])->group(function () {
         Route::get('/createPROD', 'ProdukController@create')->name('create');
         Route::POST('/storePROD', 'ProdukController@store')->name('store');
         Route::get('/editPROD/{ID_Produk}', 'ProdukController@edit')->name('edit');
+        Route::get('/export', 'ProdukController@PDF')->name('export');
         Route::POST('/updatePROD', 'ProdukController@update')->name('update');
         Route::get('/deletePROD/{ID_Produk}', 'ProdukController@destroy')->name('destroy');
     });
@@ -91,6 +94,7 @@ Route::middleware(['auth', 'role:Produksi'])->group(function () {
         Route::get('/createBOM', 'BOMController@create')->name('create');
         Route::POST('/storeBOM', 'BOMController@store')->name('store');
         Route::get('/showBOM/{ID_Produk}', 'BOMController@show')->name('show');
+        Route::get('/export/{ID_Produk}', 'BOMController@PDF')->name('export');
         Route::POST('/updateBOM', 'BOMController@update')->name('update');
         Route::get('/deleteBOM/{ID_BOM}', 'BOMController@destroy')->name('destroy');
     });

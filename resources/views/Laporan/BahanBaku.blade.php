@@ -95,25 +95,25 @@
             <thead>
                 <tr>
                     <th scope="col">No</th>
-                    <th scope="col">Kode Supplier</th>
-                    <th scope="col">Nama Usaha</th>
-                    <th scope="col">Pemilik Usaha</th>
-                    <th scope="col">Alamat Usaha</th>
-                    <th scope="col">Nomor Telepon</th>
+                    <th scope="col">Kode Bahan Baku</th>
+                    <th scope="col">Nama</th>
+                    <th scope="col">Stok</th>
+                    <th scope="col">Nama Supplier</th>
+
                 </tr>
             </thead>
             <tbody align="center">
                 @php
                 $no =1;
                 @endphp
-                @foreach ($data as $supplier)
+                @foreach ($data as$data)
                 <tr>
                     <td>{{ $no++ }}</td>
-                    <td>{{ $supplier->Kode_Supplier }}</td>
-                    <td>{{ $supplier->Nama_Supplier }}</td>
-                    <td> {{ $supplier->Pemilik_Supplier }} </td>
-                    <td> {{ $supplier->Alamat_Supplier }} </td>
-                    <td> {{ $supplier->Telp_Supplier }} </td>
+                    <td>{{$data->ID_BahanBaku }}</td>
+                    <td>{{$data->Nama_BahanBaku }}</td>
+                    <td> {{$data->Stok_BahanBaku }} </td>
+                    <td> {{$data->Supplier->Nama_Supplier }} </td>
+
                 </tr>
                 @endforeach
             </tbody>

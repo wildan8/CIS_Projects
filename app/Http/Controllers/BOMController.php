@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateBOMRequest;
 use App\Models\BahanBaku;
 use App\Models\BOM;
 use App\Models\Produk;
+use PDF;
 
 class BOMController extends Controller
 {
@@ -113,5 +114,21 @@ class BOMController extends Controller
         $BOMDEL = BOM::find($ID_BOM);
         $BOMDEL->each->delete();
         return back()->with('hapusBOM', 'Hapus Data BOM Berhasil!');
+    }
+    public function PDF(Produk $ID_Produk)
+    {
+        $Produk = collect(Produk::find($ID_Produk))->first();
+        $BB = BahanBaku::all();
+        $data = BOM::with('BahanBaku')
+            ->where('Kode_BOM', 'like', $ID_Produk->ID_Produk . '%' . $ID_Produk->Ukuran_Produk . '%')
+            ->get();
+
+        $Judul = 'List Data BOM';
+        $Tanggal = date('Y-m-d H:i:s');
+        $Jumlah = BOM::with('BahanBaku')
+            ->where('Kode_BOM', 'like', $ID_Produk->ID_Produk . '%' . $ID_Produk->Ukuran_Produk . '%')
+            ->count();
+        $pdf = PDF::loadView('Laporan.BOM', compact('data', 'Judul', 'Tanggal', 'Jumlah', 'Produk'))->setOptions(['defaultFont' => 'sans-serif']);
+        return $pdf->stream('LIST DATA BOM-' . $ID_Produk->Nama_Produk . date('ymd') . '.pdf');
     }
 }

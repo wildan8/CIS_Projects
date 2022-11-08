@@ -129,9 +129,11 @@ class SupplierController extends Controller
     {
         $Supplier = Supplier::all();
         // dd($Supplier);
-
-        $pdf = PDF::loadView('Laporan.Supplier', ['supplier' => $Supplier])->setOptions(['defaultFont' => 'sans-serif']);
-        return $pdf->stream('Supplier.pdf');
+        $Judul = 'List Data Supplier';
+        $Tanggal = date('Y-m-d H:i:s');
+        $Jumlah = Supplier::count();
+        $pdf = PDF::loadView('Laporan.Supplier', compact('Supplier', 'Judul', 'Tanggal', 'Jumlah'))->setOptions(['defaultFont' => 'sans-serif']);
+        return $pdf->stream('LIST DATA SUPPLIER-' . date('ymd') . '.pdf');
     }
 
 }

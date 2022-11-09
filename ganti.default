@@ -59,3 +59,36 @@
     });
 
 </script>
+
+<script>
+    $(document).ready(function() {
+        $('#Produk_ID').on('change', function() {
+            var Produk_ID = $(this).val();
+            var _token = $('input[name="_token"]').val();
+            if (Produk_ID) {
+                $.ajax({
+                    url: '/createMPS/fetchProduk/' + Produk_ID
+                    , type: "GET"
+                    , data: {
+                        "_token": _token
+                    }
+                    , dataType: "json"
+                    , success: function(data) {
+                        if (data) {
+                            $('#Ukuran_Produk').empty();
+                            $('#Ukuran_Produk').append('<option hidden>Pilih Ukuran Produk</option>');
+                            $.each(data, function(key, Ukuran_Produk) {
+                                $('select[name="Ukuran_Produk"]').append('<option value="' + key + '">' + Ukuran_Produk.name + '</option>');
+                            });
+                        } else {
+                            $('#Ukuran_Produk').empty();
+                        }
+                    }
+                });
+            } else {
+                $('#Ukuran_Produk').empty();
+            }
+        });
+    });
+
+</script>

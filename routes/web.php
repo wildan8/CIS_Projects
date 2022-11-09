@@ -42,6 +42,7 @@ Route::middleware(['auth', 'role:Gudang'])->group(function () {
         Route::POST('/storeSUP', 'SupplierController@store')->name('store');
         Route::get('/editSUP/{ID_Supplier}', 'SupplierController@edit')->name('edit');
         Route::get('/export', 'SupplierController@PDF')->name('export');
+        Route::get('/cari', 'SupplierController@cari')->name('cari');
         Route::POST('/updateSUP', 'SupplierController@update')->name('update');
         Route::get('/deleteSUP/{ID_Supplier}', 'SupplierController@destroy')->name('destroy');
     });
@@ -112,7 +113,7 @@ Route::middleware(['auth', 'role:Admin'])->group(function () {
     Route::prefix('MPS')->group(function () {
         Route::get('/', 'MPSController@index')->name('index');
         Route::get('/createMPS', 'MPSController@create')->name('create');
-        Route::get('/createMPS/fetchProduk', 'MPSController@fetchProduk')->name('fetchProduk');
+        Route::POST('/createMPS/fetchProduk', 'MPSController@fetchProduk')->name('fetchProduk');
         Route::POST('/storeMPS', 'MPSController@store')->name('store');
         Route::get('/editMPS/{ID_MPS}', 'MPSController@edit')->name('edit');
         Route::POST('/updateMPS', 'MPSController@update')->name('update');

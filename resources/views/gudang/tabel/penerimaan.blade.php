@@ -61,4 +61,47 @@
         </div>
     </div>
 </section>
+
+<!-- Trigger the modal with a button -->
+<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+
+<!-- Modal -->
+<div id="myModal" class="modal" role="dialog">
+    <div class="card col-md-6 col-lg-6">
+        <div class="card-header">
+            <h4>Modal Confirm</h4>
+        </div>
+        <div class="card-body">
+            <div class="card">
+                <div class="table-responsive p-2">
+                    <table class="table table-striped table-md">
+                        <thead>
+                            <th scope="col">ID</th>
+                            <th scope="col">Nama</th>
+                            <th scope="col">Jumlah</th>
+                            <th scope="col">tanggal</th>
+                            <th scope="col">status</th>
+                            <th scope="col">aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($penerimaan as $LOG)
+                            <tr>
+                                <td>{{ $LOG->Kode_LOG }}</td>
+                                <td>{{ $LOG->BahanBaku->Nama_BahanBaku }}</td>
+                                <td>{{ $LOG->Jumlah_LOG }}</td>
+                                <td>{{ $LOG->Tanggal_LOG }}</td>
+                                <td>{{ $LOG->Status_LOG }}</td>
+                                <td>
+                                    <a href="/LOG/deleteLOG/{{ $LOG->ID_LOG }}" class="btn btn-icon btn-danger" onclick="return confirm('Apakah Yakin ingin Menghapus Data?')"><i class="fas fa-times"></i></a>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection

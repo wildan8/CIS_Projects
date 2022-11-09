@@ -17,7 +17,8 @@ class SupplierController extends Controller
      */
     public function index()
     {
-        $supplier = Supplier::all();
+        $supplier = Supplier::all()
+            ->sortBy("Nama_Supplier");
         return view('gudang.tabel.supplier', compact('supplier'));
     }
 
@@ -121,13 +122,25 @@ class SupplierController extends Controller
     }
     public function PDF()
     {
-        $data = Supplier::all();
+        $data = Supplier::all()
+            ->sortBy("Nama_Supplier");
         // dd($Supplier);
         $Judul = 'List Data Supplier';
         $Tanggal = date('Y-m-d H:i:s');
         $Jumlah = Supplier::count();
         $pdf = PDF::loadView('Laporan.Supplier', compact('data', 'Judul', 'Tanggal', 'Jumlah'))->setOptions(['defaultFont' => 'sans-serif']);
         return $pdf->stream('LIST DATA SUPPLIER-' . date('ymd') . '.pdf');
+    }
+    public function cari(UpdateSupplierRequest $request)
+    {
+// menangkap data pencarian
+        $cari = "Emas Gajah Mada";
+
+// mengambil data dari table pegawai sesuai pencarian data
+        $supplier = Supplier::where('Nama_Supplier', 'like', "%" . $cari . "%");
+        dd($supplier);
+// mengirim data supplier ke view index
+        // return redirect('/Supplier', compact('supplier'));
     }
 
 }

@@ -20,7 +20,7 @@
                             <select class="form-control" name="Produk_ID" id="Produk_ID" data-placeholder="Select">
                                 <option disabled value>-- Pilih Produk --</option>
                                 @foreach ($PR as $PR)
-                                <option value="{{ $PR->ID_Produk }}">{{ $PR->Nama_Produk}}</option>
+                                <option id="Produk-{{$PR->ID_Produk}}" data-ukuran="{{$PR->Ukuran_Produk}}" value="{{ $PR->ID_Produk }}">{{ $PR->Nama_Produk}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -59,34 +59,29 @@
 <script>
     $(document).ready(function() {
         $('#Produk_ID').on('change', function() {
-            var Produk_ID = $(this).val();
-            var _token = $('input[name="_token"]').val();
-            if (Produk_ID) {
-                $.ajax({
-                    url: '/createMPS/fetchProduk/' + Produk_ID
-                    , type: "GET"
-                    , data: {
-                        "_token": _token
-                    }
-                    , dataType: "json"
-                    , success: function(data) {
-                        if (data) {
-                            $('#Ukuran_Produk').empty();
-                            $('#Ukuran_Produk').append('<option hidden>Pilih Ukuran Produk</option>');
-                            $.each(data, function(key, Ukuran_Produk) {
-                                $('select[name="Ukuran_Produk"]').append('<option value="' + key + '">' + Ukuran_Produk.name + '</option>');
-                            });
-                        } else {
-                            $('#Ukuran_Produk').empty();
-                        }
-                    }
-                });
-            } else {
-                $('#Ukuran_Produk').empty();
-            }
+            var Produk_ID = this.value;
+            $("#Ukuran_Produk").html('');
+            $.ajax({
+                url: "{{url('/MPS/createMPS/fetchProduk')}}"
+                , type: "POST"
+                , data: {
+                    Produk_ID: Produk_ID
+                    , _token: '{{csrf_token()}}'
+                }
+                , dataType: 'json'
+                , success: function(result) {
+                    $('#Ukuran_Produk').html('<option value="">-- Select Ukuran Produk --</option>');
+                    $.each(result.Produks, function(key, value) {
+                        $("#Ukuran_Produk").append('<option value="' + value
+                            .Ukuran_Produk + '">' + value.Ukuran_Produk + '</option>');
+                    });
+
+                }
+            });
         });
     });
 
 </script>
+
 
 @endpush

@@ -25,7 +25,13 @@
             Data</a>
         <a href="/Supplier/export" class="btn btn-icon icon-left btn-danger m-2"><i class="far fa-edit"></i> Export
             Data</a>
+
     </div>
+    <p>Cari Data :</p>
+    <form action="/Supplier/cari" method="GET">
+        <input type="text" name="cari" placeholder="Cari .." value="{{ old('cari') }}">
+        <input type="submit" value="CARI">
+    </form>
     <div class="section-body">
         <div class="card">
             <div class="table-responsive p-2">

@@ -19,12 +19,11 @@
         {{ session('updateBahanBaku') }}
     </div>
     @endif
+
     <div>
-        <a href="/Bahanbaku/createBB" class="btn btn-icon icon-left btn-primary m-2"><i class="far fa-edit"></i> Tambah
+        <a href="/Bahanbaku/createBB" class="btn btn-icon icon-left  btn-primary m-2"><i class="far fa-edit"></i> Tambah
             Data</a>
-    </div>
-    <div>
-        <a href="/Bahanbaku/export" class="btn btn-icon icon-left btn-primary m-2"><i class="far fa-edit"></i> Export
+        <a href="/Bahanbaku/export" class="btn btn-icon icon-left  btn-danger m-2"><i class="far fa-edit"></i> Export
             Data</a>
     </div>
     <div class="section-body">

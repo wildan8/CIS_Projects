@@ -23,10 +23,7 @@
     <div>
         <a href="/Supplier/createSUP" class="btn btn-icon icon-left btn-primary m-2"><i class="far fa-edit"></i> Tambah
             Data</a>
-    </div>
-
-    <div>
-        <a href="/Supplier/export" class="btn btn-icon icon-left btn-primary m-2"><i class="far fa-edit"></i> Export
+        <a href="/Supplier/export" class="btn btn-icon icon-left btn-danger m-2"><i class="far fa-edit"></i> Export
             Data</a>
     </div>
     <div class="section-body">

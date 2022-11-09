@@ -7,3 +7,9 @@
   </div>
 
   table table-striped table-md
+
+     <div>
+        <a href="/produk/createPROD" class="btn btn-icon icon-right  m-2 btn-primary"><i class="far fa-edit"></i> Tambah Data</a>
+        <a href="/produk/export" class="btn btn-icon icon-right  m-2 btn-danger"> Export
+            Data</a>
+    </div>

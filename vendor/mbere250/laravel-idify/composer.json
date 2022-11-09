@@ -1,0 +1,35 @@
+{
+    "name": "mbere250/laravel-idify",
+    "description": "This is a Laravel Package for creating custom and unique ID for Students, Clients, Invoices, etc...",
+    "keywords": [
+        "php",
+        "custom id",
+        "idify",
+        "custom id for laravel"
+    ],
+    "type": "library",
+    "homepage": "https://irebelibrary.com/library_plugin/laravel-idify",
+    "license": "MIT",
+    "authors":[
+        {
+            "name": "MB'DUSENGE Callixte a.k.a Mbere250",
+            "email": "mberecall@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.2|^8.0"
+    },
+    "autoload":{
+        "psr-4":{
+            "Mbere250\\IDify\\":"src/"
+        }
+    },
+        "extra":{
+        "laravel":{
+            "providers":[
+                "Mbere250\\IDify\\IDifyServiceProvider"
+            ]
+        }
+    }
+}

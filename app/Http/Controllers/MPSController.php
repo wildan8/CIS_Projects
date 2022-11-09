@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreMPSRequest;
+use App\Http\Requests\StoreProdukRequest;
 use App\Http\Requests\UpdateMPSRequest;
 use App\Models\MPS;
 use App\Models\Produk;
@@ -28,13 +29,13 @@ class MPSController extends Controller
      */
     public function create()
     {
-        $PR = Produk::all();
+        $PR = DB::table('produks')->select('Nama_Produk')->distinct()->get();
         return view('Admin.forms.MPS', compact('PR'));
     }
 
-    public function fetchProduk(Request $request)
+    public function fetchProduk(StoreProdukRequest $request)
     {
-        $data['produks'] = Produk::where("ID_Produk", $request->Produk_ID)->get("Ukuran_Produk");
+        $data['produks'] = Produk::where("Nama_Produk", $request->Produk_ID)->get(["Nama_Produk", "Ukuran_Produk"]);
         return response()->json($data);
     }
 

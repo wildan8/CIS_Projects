@@ -16,11 +16,10 @@
                             <label>Produk</label>
 
 
-
                             <select class="form-control" name="Produk_ID" id="Produk_ID" data-placeholder="Select">
                                 <option disabled value>-- Pilih Produk --</option>
                                 @foreach ($PR as $PR)
-                                <option id="Produk-{{$PR->ID_Produk}}" data-ukuran="{{$PR->Ukuran_Produk}}" value="{{ $PR->ID_Produk }}">{{ $PR->Nama_Produk}}</option>
+                                <option value="{{ $PR->Nama_Produk }}">{{ $PR->Nama_Produk}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -71,7 +70,7 @@
                 , dataType: 'json'
                 , success: function(result) {
                     $('#Ukuran_Produk').html('<option value="">-- Select Ukuran Produk --</option>');
-                    $.each(result.Produks, function(key, value) {
+                    $.each(result.produks, function(key, value) {
                         $("#Ukuran_Produk").append('<option value="' + value
                             .Ukuran_Produk + '">' + value.Ukuran_Produk + '</option>');
                     });

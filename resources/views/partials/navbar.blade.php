@@ -20,7 +20,7 @@
                 <form action="/Logout" method="POST">
                     @csrf
                     <button type="submit" class="dropdown-item has-icon text-danger">
-                        <i class="fas fa-sign-out-alt"></i> Keluar Akun
+                        Keluar Akun
                     </button>
                 </form>
                 <div class="dropdown-divider"></div>

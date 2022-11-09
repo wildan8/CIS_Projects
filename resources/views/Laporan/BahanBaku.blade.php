@@ -109,7 +109,7 @@
                 @foreach ($data as$data)
                 <tr>
                     <td>{{ $no++ }}</td>
-                    <td>{{$data->ID_BahanBaku }}</td>
+                    <td>{{$data->Kode_BahanBaku }}</td>
                     <td>{{$data->Nama_BahanBaku }}</td>
                     <td> {{$data->Stok_BahanBaku }} </td>
                     <td> {{$data->Supplier->Nama_Supplier }} </td>

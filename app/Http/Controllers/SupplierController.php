@@ -54,15 +54,9 @@ class SupplierController extends Controller
             'Alamat_Supplier' => $request->Alamat_Supplier,
             'Telp_Supplier' => $request->Telp_Supplier,
         ]);
-        // Supplier::create($validatedData);
+
         return redirect('/Supplier')->with('statusSupplier', 'Input Data Supplier Berhasil!');
-        // DB::table('suppliers')-> insert([
-        //     'Nama_Supplier' => $request -> NamaSUP,
-        //     'Pemilik_Supplier' => $request -> PemilikSUP,
-        //     'Alamat_Supplier' => $request -> AlamatSUP,
-        //     'Telp_Supplier' => $request -> TelpSUP
-        // ]);
-        // return redirect ('/Supplier');
+
     }
 
     /**

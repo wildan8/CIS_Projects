@@ -32,10 +32,12 @@
             <table class="table table-striped table-md ">
                 <thead>
                     <tr>
-                        <th scope="col">ID</th>
+                        <th scope="col">Kode</th>
                         <th scope="col">Nama</th>
                         <th scope="col">Stok</th>
+                        <th scope="col">satuan</th>
                         <th scope="col">harga Satuan</th>
+                        <th scope="col">Lead Time</th>
                         <th scope="col">Supplier</th>
                         <th scope="col">aksi</th>
                     </tr>
@@ -43,7 +45,7 @@
                 <tbody>
                     @foreach ($bahanbaku as $bahanbaku)
                     <tr>
-                        <td>{{ $bahanbaku->ID_BahanBaku }}</td>
+                        <td>{{ $bahanbaku->Kode_BahanBaku }}</td>
                         <td>
                             @if (strlen($bahanbaku->Nama_BahanBaku) > 20)
                             {{ substr($bahanbaku->Nama_BahanBaku, 0, 20) . '...' }}
@@ -52,7 +54,9 @@
                             @endif
                         </td>
                         <td>{{ $bahanbaku->Stok_BahanBaku }}</td>
+                        <td>{{$bahanbaku->Satuan_BahanBaku}}</td>
                         <td>{{ $bahanbaku->Harga_Satuan }}</td>
+                        <td>{{$bahanbaku->Leadtime_BahanBaku}}</td>
                         <td>
                             @if (strlen($bahanbaku->supplier->Nama_Supplier) > 10)
                             {{ substr($bahanbaku->supplier->Nama_Supplier, 0, 10) . '...' }}

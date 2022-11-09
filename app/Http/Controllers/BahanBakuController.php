@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\Helper;
 use App\Http\Requests\StoreBahanBakuRequest;
 use App\Http\Requests\UpdateBahanBakuRequest;
 use App\Models\BahanBaku;
@@ -47,12 +48,23 @@ class BahanBakuController extends Controller
     {
         $validatedData = $request->validate([
             'Nama_BahanBaku' => 'required',
+            'Satuan_BahanBaku' => 'required',
+            'Leadtime_BahanBaku' => 'required|integer',
             'Stok_BahanBaku' => 'required|integer',
             'Harga_Satuan' => 'required|integer',
             'Supplier_ID' => 'required',
         ]);
-
-        BahanBaku::create($validatedData);
+        $Kode_BahanBaku = Helper::IDGenerator(new BahanBaku, 'ID_BahanBaku', 'Kode_BahanBaku', 2, 'BB' . substr($request->Nama_BahanBaku, -2) . '-SUP' . $request->Supplier_ID);
+        // dd($Kode_BahanBaku);
+        BahanBaku::insert([
+            'Kode_BahanBaku' => $Kode_BahanBaku,
+            'Nama_BahanBaku' => $request->Nama_BahanBaku,
+            'Satuan_BahanBaku' => $request->Satuan_BahanBaku,
+            'Leadtime_BahanBaku' => $request->Leadtime_BahanBaku,
+            'Stok_BahanBaku' => $request->Stok_BahanBaku,
+            'Harga_Satuan' => $request->Harga_Satuan,
+            'Supplier_ID' => $request->Supplier_ID,
+        ]);
         return redirect('/Bahanbaku')->with('statusBahanBaku', 'Input Data Bahanbaku Berhasil!');
 
     }

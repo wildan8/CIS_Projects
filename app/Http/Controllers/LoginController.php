@@ -22,7 +22,7 @@ class LoginController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            return redirect()->intended('/');
+            return redirect()->intended('/' . auth()->user()->Bagian_Karyawan);
         }
         return back()->with('LoginError', 'Proses Login Gagal!');
         // dd('Login Berhasil');

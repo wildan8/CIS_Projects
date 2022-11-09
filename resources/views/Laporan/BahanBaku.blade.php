@@ -113,7 +113,6 @@
                     <td>{{$data->Nama_BahanBaku }}</td>
                     <td> {{$data->Stok_BahanBaku }} </td>
                     <td> {{$data->Supplier->Nama_Supplier }} </td>
-
                 </tr>
                 @endforeach
             </tbody>

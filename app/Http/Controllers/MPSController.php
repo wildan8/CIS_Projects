@@ -31,14 +31,30 @@ class MPSController extends Controller
         $PR = Produk::all();
         return view('Admin.forms.MPS', compact('PR'));
     }
-    public function fetch(Request $request)
+    public function fetchUkuran(Request $request)
     {
+        $Ukuran_Produk = [];
+        $Produk_ID = $request->Produk_ID;
+        if ($request->has('q')) {
+            $search = $request->q;
+            $Ukuran_Produk = Produk::select("Ukuran_Produk")
+                ->where('ID_Produk', $Produk_ID)
+                ->get();
+        } else {
+            $Ukuran_Produk = Produk::where('ID_Produk', $Produk_ID)->limit(10)->get();
+        }
+        return response()->json($Ukuran_Produk);
+    }
 
-        $Ukuran_Produk = collect(Produk::find($request->Produk_ID))
-            ->select('Ukuran_Produk')
+    public function fetchProduk(Request $request)
+    {
+        $Produk_ID = $request->Produk_ID;
+
+        $Ukuran_Produk = Produk::select("Ukuran_Produk")
+            ->where('ID_Produk', $Produk_ID)
             ->get();
 
-        return (response(['ukuranProduk' => $Ukuran_Produk]));
+        return response()->json($Produk_ID);
     }
 
     /**

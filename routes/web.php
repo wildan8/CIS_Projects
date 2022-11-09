@@ -112,7 +112,7 @@ Route::middleware(['auth', 'role:Admin'])->group(function () {
     Route::prefix('MPS')->group(function () {
         Route::get('/', 'MPSController@index')->name('index');
         Route::get('/createMPS', 'MPSController@create')->name('create');
-        Route::get('/createMPS/fetch', 'MPSController@fetch')->name('fetch');
+        Route::get('/createMPS/fetchProduk', 'MPSController@fetchProduk')->name('fetchProduk');
         Route::POST('/storeMPS', 'MPSController@store')->name('store');
         Route::get('/editMPS/{ID_MPS}', 'MPSController@edit')->name('edit');
         Route::POST('/updateMPS', 'MPSController@update')->name('update');

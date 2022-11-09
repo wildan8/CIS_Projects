@@ -42,11 +42,11 @@
                                 @enderror
                             </div>
                             <div class="form-group col-md-4">
-                                <label>Leadtime Bahan Baku</label>
+                                <label>Leadtime Bahan Baku (hari)</label>
                                 <input type="text" class="form-control @error('Leadtime_BahanBaku') is-invalid @enderror" name="Leadtime_BahanBaku" value="{{ old('Leadtime_BahanBaku') }}" required>
                                 @error('Leadtime_BahanBaku')
                                 <div class="invalid-feedback">
-                                    Isi Dengan Satuan Bahan Baku.
+                                    Isi Dengan waktu tunggu hari Bahan Baku.
                                 </div>
                                 @enderror
                             </div>

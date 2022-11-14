@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreMPSRequest;
-use App\Http\Requests\StoreProdukRequest;
 use App\Http\Requests\UpdateMPSRequest;
+use App\Models\BahanBaku;
+use App\Models\BOM;
 use App\Models\MPS;
 use App\Models\Produk;
 use Illuminate\Support\Facades\DB;
@@ -18,8 +19,9 @@ class MPSController extends Controller
      */
     public function index()
     {
-        $MPS = DB::table('MPS')->get();
-        return view('Admin.tabel.MPS', ['MPS' => $MPS]);
+        $mps = MPS::with('produk')->get();
+        // dd($mps);
+        return view('Admin.tabel.MPS', compact('mps'));
     }
 
     /**
@@ -29,13 +31,13 @@ class MPSController extends Controller
      */
     public function create()
     {
-        $PR = DB::table('produks')->select('Nama_Produk')->distinct()->get();
+        $PR = DB::table('produks')->select('Nama_Produk')->distinct('Nama_Produk')->get();
         return view('Admin.forms.MPS', compact('PR'));
     }
 
-    public function fetchProduk(StoreProdukRequest $request)
+    public function fetchProduk(StoreMPSRequest $request)
     {
-        $data['produks'] = Produk::where("Nama_Produk", $request->Produk_ID)->get(["Nama_Produk", "Ukuran_Produk"]);
+        $data['produks'] = Produk::where("Nama_Produk", $request->Produk_ID)->get("Ukuran_Produk");
         return response()->json($data);
     }
 
@@ -47,7 +49,40 @@ class MPSController extends Controller
      */
     public function store(StoreMPSRequest $request)
     {
-        //
+        $validatedData = $request->validate([
+            'Produk_ID' => 'required',
+            'Ukuran_Produk' => 'required',
+            'Jumlah_MPS' => 'required|integer',
+            'Tanggal_MPS' => 'required|date',
+
+        ]);
+        $Find_ID = produk::where("Nama_Produk", $request->Produk_ID)
+            ->where("Ukuran_Produk", $request->Ukuran_Produk)
+            ->first();
+
+        $BOM = BOM::where("Produk_ID", $Find_ID->ID_Produk)->get(["Jumlah_BOM", "BahanBaku_ID"]);
+        $arr = [];
+        foreach ($BOM as $BOMS) {
+            $BOMS->Jumlah_BOM *= $request->Jumlah_MPS;
+            $BB = BahanBaku::where("ID_BahanBaku", $BOMS->BahanBaku_ID)->first();
+            $BB->Stok_BahanBaku -= $BOMS->Jumlah_BOM;
+            // echo $BB->Leadtime_BahanBaku, '=>';
+            $tgl = date('Y-m-d', strtotime('+' . $BB->Leadtime_BahanBaku . ' days', strtotime($request->Tanggal_MPS)));
+            echo $BB->Leadtime_BahanBaku, ',', $request->Tanggal_MPS, '=>', $tgl, ' next ';
+        }
+
+        // $hitung = (integer) $BOM * $request->Jumlah_MPS;
+
+        // $Kode_MPS = Helper::IDGenerator(new MPS, 'ID_MPS', 'Kode_MPS', 2, 'MPS-' . $Find_ID->ID_Produk . $Find_ID->Ukuran_Produk . '-' . date('ymd'));
+
+        // MPS::insert([
+        //     'Kode_MPS' => $Kode_MPS,
+        //     'Produk_ID' => $Find_ID->ID_Produk,
+        //     'Ukuran_Produk' => $Find_ID->Ukuran_Produk,
+        //     'Jumlah_MPS' => $request->Jumlah_MPS,
+        //     'Tanggal_MPS' => $request->Tanggal_MPS,
+        // ]);
+        // return redirect('/MPS');
     }
 
     /**

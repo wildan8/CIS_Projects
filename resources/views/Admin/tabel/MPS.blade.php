@@ -32,25 +32,25 @@
                 <table class=" table table-striped table-md">
                     <thead>
                         <tr>
-                            <th scope="col">ID</th>
-                            <th scope="col">Nama</th>
+                            <th scope="col">Kode</th>
+                            <th scope="col">Nama Produk</th>
                             <th scope="col">Ukuran</th>
                             <th scope="col">Jumlah</th>
-                            <th scope="col">tanggal</th>
-                            <th scope="col">Status</th>
+                            <th scope="col">tanggal Pesan</th>
                             <th scope="col">aksi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($MPS as $MPS)
+                        @foreach ($mps as $mps)
                         <tr>
-                            <td>{{ $MPS->ID_MPS }}</td>
-                            <td>{{ $MPS->Jumlah_MPS }}</td>
-                            <td>{{ $MPS->Tanggal_MPS }}</td>
-                            <td>{{ $MPS->Status_MPS }}</td>
+                            <td>{{ $mps->Kode_MPS }}</td>
+                            <td>{{ $mps->produk->Nama_Produk }}</td>
+                            <td>{{ $mps->Ukuran_Produk }}</td>
+                            <td>{{ $mps->Jumlah_MPS }}</td>
+                            <td>{{ $mps->Tanggal_MPS }}</td>
                             <td>
-                                <a href="/Penerimaan/editSUP/{{$MPS->ID_MPS}}" class="btn btn-icon btn-primary"><i class="far fa-edit"></i></a>
-                                <a href="/Penerimaan/deleteSUP/{{$MPS->ID_MPS}}" class="btn btn-icon btn-danger" onclick="return confirm('Apakah Yakin ingin Menghapus Data?')"><i class="fas fa-times"></i></a>
+                                <a href="/MPS/editMPS/{{$mps->Kode_MPS}}" class="btn btn-icon btn-primary"><i class="far fa-edit"></i></a>
+                                <a href="/MPS/deleteMPS/{{$mps->Kode_MPS}}" class="btn btn-icon btn-danger" onclick="return confirm('Apakah Yakin ingin Menghapus Data?')"><i class="fas fa-times"></i></a>
                             </td>
                         </tr>
                         @endforeach

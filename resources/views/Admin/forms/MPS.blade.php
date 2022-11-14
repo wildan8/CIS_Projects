@@ -17,7 +17,7 @@
 
 
                             <select class="form-control" name="Produk_ID" id="Produk_ID" data-placeholder="Select">
-                                <option disabled value>-- Pilih Produk --</option>
+                                <option value="">-- Pilih Produk --</option>
                                 @foreach ($PR as $PR)
                                 <option value="{{ $PR->Nama_Produk }}">{{ $PR->Nama_Produk}}</option>
                                 @endforeach
@@ -30,6 +30,7 @@
 
                             </select>
                         </div>
+
                         <div class="form-group col-12">
                             <label>Jumlah Pesanan</label>
                             <input type="text" name="Jumlah_MPS" value="{{old('Jumlah_MPS')}}" class="form-control @error('Jumlah_MPS') is-invalid @enderror" required>
@@ -78,6 +79,7 @@
                 }
             });
         });
+
     });
 
 </script>

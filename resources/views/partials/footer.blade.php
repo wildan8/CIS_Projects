@@ -1,6 +1,6 @@
 <footer class="main-footer">
     <div class="footer-left">
-        Copyright &copy; 2018 <div class="bullet"></div> Design By <a href="https://nauval.in/">Muhamad Nauval Azhar</a>
+        Karya Tugas Akhir <div class="bullet"></div> developed by <a href="https://www.instagram.com/wildnjrry/">Wildan Jerry Kurniawan</a>
     </div>
     <div class="footer-right">
         2.3.0

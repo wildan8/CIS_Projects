@@ -42,10 +42,15 @@ class ProdukController extends Controller
         $validatedData = $request->validate([
             'Nama_Produk' => 'required|max:255',
             'Ukuran_Produk' => 'required|max:5',
-            'Jumlah_Produk' => 'required|integer',
+            'Leadtime_Assembly' => 'required|integer',
+        ]);
+        Produk::insert([
+            'Nama_Produk' => $request->Nama_Produk,
+            'Ukuran_Produk' => $request->Ukuran_Produk,
+            'Leadtime_Assembly' => $request->Leadtime_Assembly,
+            'Level_BOM' => 0,
         ]);
 
-        Produk::create($validatedData);
         return redirect('/produk')->with('statusProduk', 'Input Data Produk Berhasil!');
         // DB::table('produks')-> insert([
         //     'Nama_Produk' => $request -> Nama_Produk,
@@ -90,7 +95,7 @@ class ProdukController extends Controller
         $validatedData = $request->validate([
             'Nama_Produk' => 'required',
             'Ukuran_Produk' => 'required',
-            'Jumlah_Produk' => 'required|integer',
+            'Leadtime_Assembly' => 'required|integer',
         ]);
 
         Produk::where('ID_Produk', $request->ID_Produk)

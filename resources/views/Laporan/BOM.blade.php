@@ -108,6 +108,33 @@
                 <tr>
                     <th scope="col">No</th>
                     <th scope="col">Kode Bahan Baku</th>
+                    <th scope="col">Tipe Bagian</th>
+                    <th scope="col">Nama Parts</th>
+                    <th scope="col">Jumlah</th>
+                </tr>
+            </thead>
+            <tbody align="center">
+                @php
+                $no =1;
+                @endphp
+                @foreach ($dataParts as$data)
+                <tr>
+                    <td>{{ $no++ }}</td>
+                    <td>{{$data->Kode_BOM }}</td>
+                    <td>{{$data->Tipe_BOM }}</td>
+                    <td>{{$data->Nama_Part?? '-' }}</td>
+                    <td> {{$data->Jumlah_BOM }} </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+
+        <table width="95%" border="1">
+            <thead>
+                <tr>
+                    <th scope="col">No</th>
+                    <th scope="col">Kode Bahan Baku</th>
+                    <th scope="col">Tipe Bagian</th>
                     <th scope="col">Nama Bahan Baku</th>
                     <th scope="col">Jumlah</th>
                 </tr>
@@ -116,11 +143,12 @@
                 @php
                 $no =1;
                 @endphp
-                @foreach ($data as$data)
+                @foreach ($dataBB as$data)
                 <tr>
                     <td>{{ $no++ }}</td>
                     <td>{{$data->Kode_BOM }}</td>
-                    <td>{{$data->BahanBaku->Nama_BahanBaku }}</td>
+                    <td>{{$data->Tipe_BOM }}</td>
+                    <td>{{$data->BahanBaku->Nama_BahanBaku?? '-' }}</td>
                     <td> {{$data->Jumlah_BOM }} </td>
                 </tr>
                 @endforeach

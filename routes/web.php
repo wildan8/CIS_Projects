@@ -97,7 +97,8 @@ Route::middleware(['auth', 'role:Produksi'])->group(function () {
         Route::get('/showBOM/{ID_Produk}', 'BOMController@show')->name('show');
         Route::get('/export/{ID_Produk}', 'BOMController@PDF')->name('export');
         Route::POST('/updateBOM', 'BOMController@update')->name('update');
-        Route::get('/deleteBOM/{ID_BOM}', 'BOMController@destroy')->name('destroy');
+        Route::get('/deleteBBBOM/{ID_BOM}', 'BOMController@destroyBB')->name('destroy.BB');
+        Route::get('/deletePartsBOM/{ID_BOM}', 'BOMController@destroyParts')->name('destroy.Parts');
     });
     //BOM Route End
 });
@@ -106,10 +107,11 @@ Route::middleware(['auth', 'role:Produksi'])->group(function () {
 // Admin route start
 
 Route::middleware(['auth', 'role:Admin'])->group(function () {
-    Route::get('/Admin', function () {
-        return view('Admin.home');
-    });
-    //BOM Route Start
+    // Route::get('/Admin', function () {
+    //     return view('Admin.tabel.MRP');
+    // });
+
+    //MPS Route Start
     Route::prefix('MPS')->group(function () {
         Route::get('/', 'MPSController@index')->name('index');
         Route::get('/createMPS', 'MPSController@create')->name('create');
@@ -119,11 +121,21 @@ Route::middleware(['auth', 'role:Admin'])->group(function () {
         Route::POST('/updateMPS', 'MPSController@update')->name('update');
         Route::get('/deleteMPS/{ID_MPS}', 'MPSController@destroy')->name('destroy');
     });
-    //BOM Route End
+    //MPS Route End
+    //MPS Route Start
+    Route::prefix('MRP')->group(function () {
+        Route::get('/', 'MRPController@index')->name('index');
+        Route::get('/createMRP', 'MRPController@create')->name('create');
+        Route::POST('/createMRP/fetchProduk', 'MRPController@fetchProduk')->name('fetchProduk');
+        Route::get('/storeMRP/{ID_MPS}', 'MRPController@store')->name('store');
+        Route::get('/editMRP/{ID_MRP}', 'MRPController@edit')->name('edit');
+        Route::POST('/updateMRP', 'MRPController@update')->name('update');
+        Route::get('/deleteMRP/{ID_MRP}', 'MPSController@destroy')->name('destroy');
+    });
+    //MPS Route End
 });
 // Admin Route End
 
-// Produksi Route End//
 Route::get('/ReturnProduk', 'ReturnProdukController@index');
 
 Route::get('/Payment', 'PaymentsController@index');

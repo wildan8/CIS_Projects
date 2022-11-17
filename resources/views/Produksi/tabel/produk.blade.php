@@ -33,7 +33,7 @@
                             <th scope="col">ID</th>
                             <th scope="col">Nama Produk</th>
                             <th scope="col">Ukuran Produk</th>
-                            <th scope="col">Jumlah</th>
+                            <th scope="col">Leadtime (Hari)</th>
                             <th scope="col">aksi</th>
                         </tr>
                     </thead>
@@ -49,7 +49,7 @@
                                 @endif
                             </td>
                             <td>{{ $produk->Ukuran_Produk }}</td>
-                            <td>{{ $produk->Jumlah_Produk }}</td>
+                            <td>{{ $produk->Leadtime_Assembly }}</td>
 
                             <td>
                                 <a href="/produk/editPROD/{{ $produk->ID_Produk }}" class="btn btn-icon  m-2 btn-primary"><i class="far fa-edit"></i></a>

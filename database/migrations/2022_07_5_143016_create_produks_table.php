@@ -17,7 +17,8 @@ return new class extends Migration
             $table->id('ID_Produk');
             $table->string('Nama_Produk');
             $table->string('Ukuran_Produk');
-            $table->integer('Jumlah_Produk');
+            $table->integer('Leadtime_Assembly');
+            $table->integer('Level_BOM');
             $table->timestamps();
         });
     }
@@ -29,6 +30,7 @@ return new class extends Migration
      */
     public function down()
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('produks');
     }
 };

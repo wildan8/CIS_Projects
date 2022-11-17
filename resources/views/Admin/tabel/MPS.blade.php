@@ -44,7 +44,7 @@
                         @foreach ($mps as $mps)
                         <tr>
                             <td>{{ $mps->Kode_MPS }}</td>
-                            <td>{{ $mps->produk->Nama_Produk }}</td>
+                            <td>{{ $mps->Produk->Nama_Produk ?? '-' }}</td>
                             <td>{{ $mps->Ukuran_Produk }}</td>
                             <td>{{ $mps->Jumlah_MPS }}</td>
                             <td>{{ $mps->Tanggal_MPS }}</td>

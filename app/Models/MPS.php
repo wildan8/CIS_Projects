@@ -16,4 +16,8 @@ class MPS extends Model
     {
         return $this->belongsTo(Produk::class, 'Produk_ID');
     }
+    public function MRP()
+    {
+        return $this->hasOne(MRP::class);
+    }
 }

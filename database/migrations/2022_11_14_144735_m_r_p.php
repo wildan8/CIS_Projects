@@ -18,7 +18,8 @@ return new class extends Migration
             $table->string('Kode_MRP');
             $table->bigInteger('MPS_ID')->unsigned();
             $table->bigInteger('Produk_ID')->unsigned();
-            $table->bigInteger('BOM_ID')->unsigned();
+            $table->bigInteger('BOM_ID')->unsigned()->nullable();
+            $table->date('Tanggal_Pesan');
             $table->date('Tanggal_Selesai');
             $table->integer('GR')->nullable();
             $table->integer('SR')->nullable();
@@ -26,7 +27,6 @@ return new class extends Migration
             $table->integer('NR')->nullable();
             $table->integer('POR')->nullable();
             $table->integer('POREL')->nullable();
-            $table->string('status')->nullable();
             $table->timestamps();
         });
         Schema::table('m_r_p_s', function (Blueprint $table) {

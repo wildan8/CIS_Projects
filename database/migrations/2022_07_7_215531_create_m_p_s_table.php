@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('Ukuran_Produk');
             $table->integer('Jumlah_MPS');
             $table->date('Tanggal_MPS');
+            $table->string('status');
             $table->timestamps();
         });
         Schema::table('m_p_s', function (Blueprint $table) {
@@ -33,7 +34,7 @@ return new class extends Migration
      * @return void
      */
     public function down()
-    {
+    {Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('m_p_s');
     }
 };

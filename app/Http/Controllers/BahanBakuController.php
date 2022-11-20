@@ -21,8 +21,8 @@ class BahanBakuController extends Controller
     {
 
         $bahanbaku = BahanBaku::with('Supplier')->get();
-        dd($bahanbaku);
-        // return view('gudang.tabel.bahanbaku', compact('bahanbaku'));
+        // dd($bahanbaku);
+        return view('gudang.tabel.bahanbaku', compact('bahanbaku'));
 
     }
 

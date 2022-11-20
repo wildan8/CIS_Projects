@@ -13,6 +13,7 @@ class MRP extends Model
         'MPS_ID',
         'Produk_ID',
         'BOM_ID',
+        'Tanggal_Pesan',
         'Tanggal_Selesai',
         'GR',
         'SR',

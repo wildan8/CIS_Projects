@@ -28,7 +28,7 @@
                             <td>{{ $mps->Ukuran_Produk }}</td>
                             <td>{{ $mps->Jumlah_MPS }}</td>
                             <td>{{ $mps->Tanggal_MPS }}</td>
-                            <td>Waiting</td>
+                            <td>{{$mps -> status}}</td>
                             <td>
                                 <a href='/MRP/storeMRP/{{$mps->ID_MPS}}' class="btn btn-icon btn-primary"><i class="fa fa-cog"></i></a>
                             </td>
@@ -44,7 +44,7 @@
                     <thead>
                         <tr>
                             <th scope="col">Kode MRP</th>
-                            <th scope="col">Kode Pesanan</th>
+                            <th scope="col">Kode Pesan</th>
                             <th scope="col">Nama</th>
                             <th scope="col">Level MRP</th>
                             <th scope="col">Jumlah</th>
@@ -55,18 +55,35 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <td>MRP-BLA</td>
-                        <td>MPS-BLA</td>
-                        <td>Kain BBB</td>
-                        <td>2</td>
-                        <td>7</td>
-                        <td>12-12-12</td>
-                        <td>14-04-27</td>
-                        <td>Success</td>
-                        <td>
-                            <a href="/MRP/editMRP/#" class="btn btn-icon  m-2 btn-primary"><i class="far fa-eye"></i></a>
-                            <a href="/MRP/deleteMRP/#" class="btn btn-icon  m-2 btn-danger" onclick="return confirm('Apakah Yakin ingin Menghapus Data?')"><i class="fas fa-times"></i></a>
-                        </td>
+                        @foreach ($mrp as $item)
+                        <tr>
+                            <td>
+                                @if (strlen($item->Kode_MRP) > 12)
+                                {{ substr($item->Kode_MRP, 0, 12) . '...' }}
+                                @else
+                                {{ $item->Kode_MRP }}
+                                @endif
+                            </td>
+                            <td>
+                                @if (strlen($item->MPS->Kode_MPS) > 10)
+                                {{ substr($item->MPS->Kode_MPS, 0, 10) . '...' }}
+                                @else
+                                {{ $item->MPS->Kode_MPS }}
+                                @endif
+                            </td>
+                            <td>{{$item->BOM->BahanBaku->Nama_BahanBaku?? $item->BOM->Nama_Part ?? $item->Produk->Nama_Produk?? '-'}}</td>
+                            <td>{{$item->BOM->Level_BOM?? $item->Produk->Level_BOM ??'-'}}</td>
+                            <td>{{$item->POREL??'-'}}</td>
+                            <td>{{$item->Tanggal_Pesan}}</td>
+                            <td>{{$item->Tanggal_Selesai}}</td>
+                            <td>{{$item->MPS ->status}}</td>
+
+                            <td>
+                                <a href="/MRP/editMRP/#" class="btn btn-icon  m-2 btn-primary"><i class="far fa-eye"></i></a>
+                                <a href="/MRP/deleteMRP/#" class="btn btn-icon  m-2 btn-danger" onclick="return confirm('Apakah Yakin ingin Menghapus Data?')"><i class="fas fa-times"></i></a>
+                            </td>
+                        </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>

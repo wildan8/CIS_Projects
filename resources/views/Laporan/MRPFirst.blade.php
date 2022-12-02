@@ -76,30 +76,30 @@
                 <td align="center">
                     <img src="logo_CIS-removebg-preview.png" alt="Logo" width="64" class="logo" />
                 </td>
-                <td align="right" style="width: 35%;">
+                <td align="right" style="width: 35%;margin:100px">
                     <h3>PT. Cahaya Indah Surgawi</h3>
                     <pre>
-                        Jl. Raya Kerobokan No.52, 
-                        Kerobokan Kelod, 
-                        Kec. Kuta Utara, 
-                        Kabupaten Badung, 
-                        Bali 80361.
+                    Jl. Raya Kerobokan No.52, 
+                    Kerobokan Kelod, 
+                    Kec. Kuta Utara, 
+                    Kabupaten Badung, 
+                    Bali 80361.
                     </pre>
                 </td>
             </tr>
 
         </table>
     </div>
-    <center>
-        <h1>Data BOM</h1>
-    </center>
     <div class="rincian">
         <table>
             <tr>
                 <td align="left" style="width: 35%;">
-                    Nama Produk :{{$Produk->Nama_Produk }} <br>
-                    Ukuran Produk : {{$Produk->Ukuran_Produk}} <br>
-                    Jumlah Data : {{$Jumlah}}
+                    Nama Produk :{{$mps->Produk->Nama_Produk }} <br>
+                    Status Produksi : {{$mps->status}} <br>
+                    Tanggal Pesan : {{$mps->Tanggal_MPS}} <br>
+                    Tanggal Selesai : {{$mrpTanggal->Tanggal_Selesai}} <br>
+                    Ukuran Produk : {{$mps->Produk->Ukuran_Produk}} <br>
+                    Jumlah Data : {{$Jumlah}} <br>
                 </td>
             </tr>
         </table>
@@ -110,53 +110,35 @@
             <thead>
                 <tr>
                     <th scope="col">No</th>
-                    <th scope="col">Kode Part</th>
-                    <th scope="col">Tipe Bagian</th>
-                    <th scope="col">Nama Parts</th>
+                    <th scope="col">Kode </th>
+                    <th scope="col">Nama</th>
+                    <th scope="col">Level</th>
                     <th scope="col">Jumlah</th>
+                    <th scope="col">tanggal Pesan</th>
+                    <th scope="col">tanggal Selesai</th>
+
                 </tr>
             </thead>
             <tbody align="center">
                 @php
                 $no =1;
                 @endphp
-                @foreach ($dataParts as$data)
+                @foreach ($mrp as $item)
                 <tr>
                     <td>{{ $no++ }}</td>
-                    <td>{{$data->Kode_BOM }}</td>
-                    <td>{{$data->Tipe_BOM }}</td>
-                    <td>{{$data->Nama_Part?? '-' }}</td>
-                    <td> {{$data->Jumlah_BOM }} </td>
+                    <td>{{$item->Kode_MRP}}</td>
+
+                    <td>{{$item->BOM->BahanBaku->Nama_BahanBaku?? $item->BOM->Nama_Part ?? $item->Produk->Nama_Produk?? '-'}}</td>
+                    <td>{{$item->BOM->Level_BOM?? $item->Produk->Level_BOM ??'-'}}</td>
+                    <td>{{$item->POREL??'-'}}</td>
+                    <td>{{$item->Tanggal_Pesan}}</td>
+                    <td>{{$item->Tanggal_Selesai}}</td>
+
                 </tr>
                 @endforeach
             </tbody>
         </table>
 
-        <table width="95%" border="1">
-            <thead>
-                <tr>
-                    <th scope="col">No</th>
-                    <th scope="col">Kode Bahan Baku</th>
-                    <th scope="col">Tipe Bagian</th>
-                    <th scope="col">Nama Bahan Baku</th>
-                    <th scope="col">Jumlah</th>
-                </tr>
-            </thead>
-            <tbody align="center">
-                @php
-                $no =1;
-                @endphp
-                @foreach ($dataBB as$data)
-                <tr>
-                    <td>{{ $no++ }}</td>
-                    <td>{{$data->Kode_BOM }}</td>
-                    <td>{{$data->Tipe_BOM }}</td>
-                    <td>{{$data->BahanBaku->Nama_BahanBaku?? '-' }}</td>
-                    <td> {{$data->Jumlah_BOM }} </td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
     </div>
 </body>
 </html>

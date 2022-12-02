@@ -15,10 +15,18 @@ return new class extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id('ID_Payment');
+            $table->string('Kode_Payment');
+            $table->bigInteger('MRP_ID')->unsigned();
             $table->float('Harga_Payment')->default(0);
             $table->date('Tanggal_Payment');
-            $table->boolean('Status_Payment');
             $table->timestamps();
+        });
+        Schema::table('payments', function (Blueprint $table) {
+
+            $table->foreign('MRP_ID')
+                ->references('ID_MRP')
+                ->on('m_r_p_s')
+                ->onDelete('cascade');
         });
     }
 
@@ -29,6 +37,7 @@ return new class extends Migration
      */
     public function down()
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('payments');
     }
 };

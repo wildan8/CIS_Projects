@@ -54,7 +54,7 @@
 </section>
 @endsection
 
-@push('javascript-internal')
+@push('js-internal')
 
 <script>
     $(document).ready(function() {

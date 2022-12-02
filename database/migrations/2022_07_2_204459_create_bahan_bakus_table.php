@@ -20,8 +20,8 @@ return new class extends Migration
             $table->string('Nama_BahanBaku');
             $table->string('Satuan_BahanBaku');
             $table->integer('Leadtime_BahanBaku');
-            $table->integer('Stok_BahanBaku');
             $table->float('Harga_Satuan');
+            $table->string('image')->nullable();
             $table->timestamps();
         });
         Schema::table('bahan_bakus', function (Blueprint $table) {

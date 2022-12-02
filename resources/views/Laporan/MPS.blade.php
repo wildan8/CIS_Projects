@@ -69,35 +69,52 @@
 
 <bold>Judul:</bold> {{$Judul }}
 <bold>Tanggal Pembuatan:</bold> {{$Tanggal}}
-<bold>Jumlah Data:</bold> {{$Jumlah}}
+{{-- <bold>Range:</bold> {{$Tanggal}} --}}
+
                     </pre>
                 </td>
                 <td align="center">
                     <img src="logo_CIS-removebg-preview.png" alt="Logo" width="64" class="logo" />
                 </td>
-                <td align="right" style="width: 35%;">
+                <td align="right" style="width: 35%; ">
                     <h3>PT. Cahaya Indah Surgawi</h3>
                     <pre>
-                        Jl. Raya Kerobokan No.52, 
-                        Kerobokan Kelod, 
-                        Kec. Kuta Utara, 
-                        Kabupaten Badung, 
-                        Bali 80361.
+                Jl. Raya Kerobokan No.52, 
+                Kerobokan Kelod, 
+                Kec. Kuta Utara, 
+                Kabupaten Badung, 
+                Bali 80361.
                     </pre>
                 </td>
             </tr>
 
         </table>
     </div>
+    <center>
+        <h1>Data MPS</h1>
+    </center>
     <div class="invoice">
-        <h3>List Data</h3>
+        <div class="rincian">
+            <table>
+                <tr>
+                    <td align="left" style="width: 35%;">
+
+                        Date range : {{$start.' - '.$end}} <br>
+
+                    </td>
+                </tr>
+            </table>
+        </div>
         <table width="95%" border="1">
             <thead>
                 <tr>
                     <th scope="col">No</th>
-                    <th scope="col">Kode Produk</th>
-                    <th scope="col">Nama</th>
+                    <th scope="col">Kode MPS</th>
+                    <th scope="col">Nama Produk</th>
+                    <th scope="col">Jumlah</th>
                     <th scope="col">Ukuran</th>
+                    <th scope="col">status</th>
+
                 </tr>
             </thead>
             <tbody align="center">
@@ -107,9 +124,11 @@
                 @foreach ($data as$data)
                 <tr>
                     <td>{{ $no++ }}</td>
-                    <td>{{$data->Kode_Produk?? '-'}}</td>
-                    <td>{{$data->Nama_Produk }}</td>
+                    <td>{{$data->Kode_MPS }}</td>
+                    <td>{{$data->Produk->Nama_Produk }}</td>
+                    <td> {{$data->Jumlah_MPS }} </td>
                     <td> {{$data->Ukuran_Produk }} </td>
+                    <td> {{$data->Tanggal_MPS}} </td>
                 </tr>
                 @endforeach
             </tbody>

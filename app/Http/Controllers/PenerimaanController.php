@@ -7,6 +7,7 @@ use App\Http\Requests\StorePenerimaanRequest;
 use App\Http\Requests\UpdatePenerimaanRequest;
 use App\Models\BahanBaku;
 use App\Models\Penerimaan;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use PDF;
 
@@ -19,8 +20,23 @@ class PenerimaanController extends Controller
      */
     public function index()
     {
+//INISIASI 30 HARI RANGE SAAT INI JIKA HALAMAN PERTAMA KALI DI-LOAD
+        //KITA GUNAKAN STARTOFMONTH UNTUK MENGAMBIL TANGGAL 1
+        $start = Carbon::now()->startOfMonth()->format('Y-m-d H:i:s');
+        //DAN ENDOFMONTH UNTUK MENGAMBIL TANGGAL TERAKHIR DIBULAN YANG BERLAKU SAAT INI
+        $end = Carbon::now()->endOfMonth()->format('Y-m-d H:i:s');
 
-        $penerimaan = Penerimaan::with('BahanBaku')->get();
+        //JIKA USER MELAKUKAN FILTER MANUAL, MAKA PARAMETER DATE AKAN TERISI
+        if (request()->date != '') {
+            //MAKA FORMATTING TANGGALNYA BERDASARKAN FILTER USER
+            $date = explode(' - ', request()->date);
+            $start = Carbon::parse($date[0])->format('Y-m-d') . ' 00:00:01';
+            $end = Carbon::parse($date[1])->format('Y-m-d') . ' 23:59:59';
+        }
+
+        //BUAT QUERY KE DB MENGGUNAKAN WHEREBETWEEN DARI TANGGAL FILTER
+        $penerimaan = Penerimaan::with('BahanBaku')->whereBetween('Tanggal_LOG', [$start, $end])->orderByDesc('Tanggal_LOG')->paginate(10);
+
         return view('gudang.tabel.penerimaan', ['penerimaan' => $penerimaan]);
     }
 
@@ -145,14 +161,22 @@ class PenerimaanController extends Controller
             return back();
         }
     }
-    public function PDF()
+    public function PDF($daterange)
     {
-        $data = Penerimaan::all();
-        // dd($Penerimaan);
-        $Judul = 'List Data Penerimaan';
+        $date = explode('+', $daterange); //EXPLODE TANGGALNYA UNTUK MEMISAHKAN START & END
+        //DEFINISIKAN VARIABLENYA DENGAN FORMAT TIMESTAMPS
+        $start = Carbon::parse($date[0])->format('Y-m-d') . ' 00:00:01';
+        $end = Carbon::parse($date[1])->format('Y-m-d') . ' 23:59:59';
+        $Judul = 'List Data LOG Bahan Baku';
         $Tanggal = date('Y-m-d H:i:s');
         $Jumlah = Penerimaan::count();
-        $pdf = PDF::loadView('Laporan.LOG', compact('data', 'Judul', 'Tanggal', 'Jumlah'))->setOptions(['defaultFont' => 'sans-serif']);
-        return $pdf->stream('LIST DATA PENERIMAAN-' . date('ymd') . '.pdf');
+        //KEMUDIAN BUAT QUERY BERDASARKAN RANGE CREATED_AT YANG TELAH DITETAPKAN RANGENYA DARI $START KE $END
+        $data = Penerimaan::with('BahanBaku')->whereBetween('Tanggal_LOG', [$start, $end])->orderByDesc('Tanggal_LOG')->get();
+        //LOAD VIEW UNTUK PDFNYA DENGAN MENGIRIMKAN DATA DARI HASIL QUERY
+
+        //GENERATE PDF-NYA
+        $pdf = PDF::loadView('Laporan.LOG', compact('data', 'Judul', 'Tanggal', 'Jumlah', 'start', 'end'))->setOptions(['defaultFont' => 'sans-serif']);
+        return $pdf->stream();
+
     }
 }

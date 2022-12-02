@@ -10,6 +10,7 @@ class Produk extends Model
     use HasFactory;
     protected $primaryKey = 'ID_Produk';
     protected $fillable = [
+        'Kode_Produk',
         'Nama_Produk',
         'Ukuran_Produk',
         'Leadtime_Assembly',

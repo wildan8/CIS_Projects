@@ -17,8 +17,7 @@ class SupplierController extends Controller
      */
     public function index()
     {
-        $supplier = Supplier::all()
-            ->sortBy("Nama_Supplier");
+        $supplier = Supplier::orderBy("Nama_Supplier")->paginate(10);
         return view('gudang.tabel.supplier', compact('supplier'));
     }
 

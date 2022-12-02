@@ -27,6 +27,7 @@ return new class extends Migration
             $table->integer('NR')->nullable();
             $table->integer('POR')->nullable();
             $table->integer('POREL')->nullable();
+            $table->string('status');
             $table->timestamps();
         });
         Schema::table('m_r_p_s', function (Blueprint $table) {

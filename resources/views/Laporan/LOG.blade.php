@@ -69,10 +69,10 @@
                 <td align="right" style="width: 35%;">
                     <h3>PT. Cahaya Indah Surgawi</h3>
                     <pre>
-                        Jl. Raya Kerobokan No.52, 
-                        Kerobokan Kelod, 
-                        Kec. Kuta Utara, 
-                        Kabupaten Badung, 
+                        Jl. Raya Kerobokan No.52,
+                        Kerobokan Kelod,
+                        Kec. Kuta Utara,
+                        Kabupaten Badung,
                         Bali 80361.
                     </pre>
                 </td>
@@ -81,7 +81,7 @@
         </table>
     </div>
     <center>
-        <h1>List Data Supplier</h1>
+        <h1>Data LOG Bahan Baku</h1>
     </center>
     <div class="invoice">
         <div class="rincian">
@@ -90,7 +90,9 @@
                     <td align="left" style="width: 35%;">
                         <bold>Judul:</bold> {{$Judul }} <br>
                         <bold>Tanggal Pembuatan:</bold> {{$Tanggal}} <br>
-                        <bold>Jumlah Data:</bold> {{$Jumlah}}
+
+                        Date range : {{$start.' - '.$end}} <br>
+
                     </td>
                 </tr>
             </table>
@@ -101,25 +103,26 @@
                 <thead>
                     <tr>
                         <th scope="col">No</th>
-                        <th scope="col">Kode Supplier</th>
-                        <th scope="col">Nama Usaha</th>
-                        <th scope="col">Pemilik Usaha</th>
-                        <th scope="col">Alamat Usaha</th>
-                        <th scope="col">Nomor Telepon</th>
+                        <th scope="col">Kode LOG</th>
+                        <th scope="col">Nama</th>
+                        <th scope="col">Jumlah</th>
+                        <th scope="col">Tanggal</th>
+                        <th scope="col">status</th>
+
                     </tr>
                 </thead>
                 <tbody align="center">
                     @php
                     $no =1;
                     @endphp
-                    @foreach ($data as $supplier)
+                    @foreach ($data as$data)
                     <tr>
                         <td>{{ $no++ }}</td>
-                        <td>{{ $supplier->Kode_Supplier }}</td>
-                        <td>{{ $supplier->Nama_Supplier }}</td>
-                        <td> {{ $supplier->Pemilik_Supplier }} </td>
-                        <td> {{ $supplier->Alamat_Supplier }} </td>
-                        <td> {{ $supplier->Telp_Supplier }} </td>
+                        <td>{{$data->Kode_LOG }}</td>
+                        <td>{{$data->BahanBaku->Nama_BahanBaku }}</td>
+                        <td> {{$data->Jumlah_LOG }} </td>
+                        <td> {{$data->Tanggal_LOG }} </td>
+                        <td> {{$data->Status_LOG }} </td>
                     </tr>
                     @endforeach
                 </tbody>

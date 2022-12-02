@@ -19,7 +19,7 @@ class BOMController extends Controller
      */
     public function index()
     {
-        $Produk = Produk::all();
+        $Produk = Produk::paginate(10);
         return view('produksi.tabel.BOM', compact('Produk'));
     }
 

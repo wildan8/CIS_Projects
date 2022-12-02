@@ -62,15 +62,6 @@
             <tr>
                 <td align="left" style="width: 35%;">
 
-                    <pre>
-
-
-
-
-<bold>Judul:</bold> {{$Judul }}
-<bold>Tanggal Pembuatan:</bold> {{$Tanggal}}
-<bold>Jumlah Data:</bold> {{$Jumlah}}
-                    </pre>
                 </td>
                 <td align="center">
                     <img src="logo_CIS-removebg-preview.png" alt="Logo" width="64" class="logo" />
@@ -89,34 +80,113 @@
 
         </table>
     </div>
-    <div class="invoice">
-        <h3>List Data</h3>
-        <table width="95%" border="1">
-            <thead>
-                <tr>
-                    <th scope="col">No</th>
-                    <th scope="col">Kode Bahan Baku</th>
-                    <th scope="col">Nama</th>
-                    <th scope="col">Stok</th>
-                    <th scope="col">Nama Supplier</th>
 
-                </tr>
-            </thead>
-            <tbody align="center">
-                @php
-                $no =1;
-                @endphp
-                @foreach ($data as$data)
+    @if ($jenis == 'KEBUTUHAN')
+    <center>
+        <h1>Data Kebutuhan Bahan Baku</h1>
+    </center>
+    <div class="invoice">
+        <div class="rincian">
+            <table>
                 <tr>
-                    <td>{{ $no++ }}</td>
-                    <td>{{$data->Kode_BahanBaku }}</td>
-                    <td>{{$data->Nama_BahanBaku }}</td>
-                    <td> {{$data->Stok_BahanBaku }} </td>
-                    <td> {{$data->Supplier->Nama_Supplier }} </td>
+                    <td align="left" style="width: 35%;">
+                        Judul : {{$Judul}} <br>
+                        Tanggal Pembuatan : {{$Tanggal}} <br>
+                        Date range : {{$start.' Sampai '.$end}} <br>
+
+                    </td>
                 </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
+            </table>
+        </div>
+        <div class="invoice">
+
+            <table width="95%" border="1">
+                <thead>
+                    <tr>
+                        <th scope="col">Kode</th>
+                        <th scope="col">Nama </th>
+                        <th scope="col">Satuan </th>
+                        <th scope="col">Jumlah</th>
+                        <th scope="col">Tanggal Pesan</th>
+                        <th scope="col">Tanggal Selesai</th>
+                        <th scope="col">Status</th>
+
+                    </tr>
+                </thead>
+                <tbody align="center">
+                    @php
+                    $no =1;
+                    @endphp
+                    @foreach ($mrp as $itemMRP)
+                    @if($itemMRP->BOM_ID != null)
+                    @if($itemMRP->BOM->Tipe_BOM =="BahanBaku")
+                    <tr>
+                        <td>{{$itemMRP->Kode_MRP }}</td>
+                        <td>{{$itemMRP->BOM ->BahanBaku->Nama_BahanBaku}}</td>
+                        <td>{{ $itemMRP->BOM->BahanBaku->Satuan_BahanBaku }}</td>
+                        <td>{{ $itemMRP->GR }}</td>
+                        <td>{{ $itemMRP->Tanggal_Pesan }}</td>
+                        <td>{{ $itemMRP->Tanggal_Selesai }}</td>
+                        <td>{{ $itemMRP->status }}</td>
+
+                    </tr>
+                    @endif
+
+                    @endif
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+        @else
+        <center>
+            <h1>Data Bahan Baku</h1>
+        </center>
+        <div class="rincian" style="p-2">
+            <table>
+                <tr>
+                    <td align="left" style="width: 35%;">
+                        Judul : {{$Judul}} <br>
+                        Tanggal Pembuatan : {{$Tanggal}} <br>
+                        Jumlah Data : {{$Jumlah}}
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="invoice">
+
+            <table width="95%" border="1">
+                <thead>
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Kode Bahan Baku</th>
+                        <th scope="col">Nama</th>
+                        <th scope="col">Stok</th>
+                        <th scope="col">Nama Supplier</th>
+
+                    </tr>
+                </thead>
+                <tbody align="center">
+                    @php
+                    $no =1;
+                    @endphp
+                    @foreach ($data as$data)
+                    <tr>
+                        <td>{{ $no++ }}</td>
+                        <td>{{$data->Kode_BahanBaku }}</td>
+                        <td>{{$data->Nama_BahanBaku }}</td>
+                        <td> {{$data->Stok_BahanBaku }} </td>
+                        <td> {{$data->Supplier->Nama_Supplier }} </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+        @endif
+
+
+
+
+
+
 </body>
 </html>

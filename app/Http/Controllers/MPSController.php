@@ -7,7 +7,9 @@ use App\Http\Requests\StoreMPSRequest;
 use App\Http\Requests\UpdateMPSRequest;
 use App\Models\MPS;
 use App\Models\Produk;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use PDF;
 
 class MPSController extends Controller
 {
@@ -18,7 +20,22 @@ class MPSController extends Controller
      */
     public function index()
     {
-        $mps = MPS::with('Produk')->get();
+        //INISIASI 30 HARI RANGE SAAT INI JIKA HALAMAN PERTAMA KALI DI-LOAD
+        //KITA GUNAKAN STARTOFMONTH UNTUK MENGAMBIL TANGGAL 1
+        $start = Carbon::now()->startOfMonth()->format('Y-m-d H:i:s');
+        //DAN ENDOFMONTH UNTUK MENGAMBIL TANGGAL TERAKHIR DIBULAN YANG BERLAKU SAAT INI
+        $end = Carbon::now()->endOfMonth()->format('Y-m-d H:i:s');
+
+        //JIKA USER MELAKUKAN FILTER MANUAL, MAKA PARAMETER DATE AKAN TERISI
+        if (request()->date != '') {
+            //MAKA FORMATTING TANGGALNYA BERDASARKAN FILTER USER
+            $date = explode(' - ', request()->date);
+            $start = Carbon::parse($date[0])->format('Y-m-d') . ' 00:00:01';
+            $end = Carbon::parse($date[1])->format('Y-m-d') . ' 23:59:59';
+        }
+
+        //BUAT QUERY KE DB MENGGUNAKAN WHEREBETWEEN DARI TANGGAL FILTER
+        $mps = MPS::with('Produk')->whereBetween('Tanggal_MPS', [$start, $end])->paginate(10);
 
         // dd($mps);
         return view('Admin.tabel.MPS', compact('mps'));
@@ -90,9 +107,9 @@ class MPSController extends Controller
      * @param  \App\Models\MPS  $mPS
      * @return \Illuminate\Http\Response
      */
-    public function edit(MPS $mPS)
+    public function edit(MPS $ID_MPS)
     {
-        //
+
     }
 
     /**
@@ -104,7 +121,7 @@ class MPSController extends Controller
      */
     public function update(UpdateMPSRequest $request, MPS $mPS)
     {
-        //
+
     }
 
     /**
@@ -113,8 +130,26 @@ class MPSController extends Controller
      * @param  \App\Models\MPS  $mPS
      * @return \Illuminate\Http\Response
      */
-    public function destroy(MPS $mPS)
+    public function destroy(MPS $ID_MPS)
     {
-        //
+        $MPSDEL = MPS::find($ID_MPS);
+        $MPSDEL->each->delete();
+        return redirect('/MPS')->with('statusMPS', 'Hapus Data Produk Berhasil!');
+    }
+    public function export($daterange)
+    {
+        $date = explode('+', $daterange); //EXPLODE TANGGALNYA UNTUK MEMISAHKAN START & END
+        //DEFINISIKAN VARIABLENYA DENGAN FORMAT TIMESTAMPS
+        $start = Carbon::parse($date[0])->format('Y-m-d') . ' 00:00:01';
+        $end = Carbon::parse($date[1])->format('Y-m-d') . ' 23:59:59';
+        $Tanggal = date('Y-m-d H:i:s');
+        $Judul = 'MPS-' . $Tanggal;
+        //KEMUDIAN BUAT QUERY BERDASARKAN RANGE CREATED_AT YANG TELAH DITETAPKAN RANGENYA DARI $START KE $END
+
+        $data = MPS::with('Produk')->whereBetween('Tanggal_MPS', [$start, $end])->paginate(10);
+        //LOAD VIEW UNTUK PDFNYA DENGAN MENGIRIMKAN DATA DARI HASIL QUERY
+        $pdf = PDF::loadView('Laporan.MPS', compact('data', 'date', 'Judul', 'Tanggal', 'start', 'end'));
+        //GENERATE PDF-NYA
+        return $pdf->stream();
     }
 }

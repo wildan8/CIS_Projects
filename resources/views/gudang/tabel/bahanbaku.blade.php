@@ -43,34 +43,35 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($bahanbaku as $bahanbaku)
+                    @foreach ($bahanbaku as $b)
                     <tr>
-                        <td>{{ $bahanbaku->Kode_BahanBaku }}</td>
+                        <td>{{ $b->Kode_BahanBaku }}</td>
                         <td>
-                            @if (strlen($bahanbaku->Nama_BahanBaku) > 20)
-                            {{ substr($bahanbaku->Nama_BahanBaku, 0, 20) . '...' }}
+                            @if (strlen($b->Nama_BahanBaku) > 20)
+                            {{ substr($b->Nama_BahanBaku, 0, 20) . '...' }}
                             @else
-                            {{ $bahanbaku->Nama_BahanBaku }}
+                            {{ $b->Nama_BahanBaku }}
                             @endif
                         </td>
-                        <td>{{ $bahanbaku->Stok_BahanBaku }}</td>
-                        <td>{{$bahanbaku->Satuan_BahanBaku}}</td>
-                        <td>{{ $bahanbaku->Harga_Satuan }}</td>
-                        <td>{{$bahanbaku->Leadtime_BahanBaku}}</td>
+                        <td>{{ $b->Stok_BahanBaku }}</td>
+                        <td>{{$b->Satuan_BahanBaku}}</td>
+                        <td>{{ $b->Harga_Satuan }}</td>
+                        <td>{{$b->Leadtime_BahanBaku}}</td>
                         <td>
-                            @if (strlen($bahanbaku->supplier->Nama_Supplier) > 10)
-                            {{ substr($bahanbaku->supplier->Nama_Supplier, 0, 10) . '...' }}
+                            @if (strlen($b->supplier->Nama_Supplier) > 10)
+                            {{ substr($b->supplier->Nama_Supplier, 0, 10) . '...' }}
                             @else
-                            {{ $bahanbaku->supplier->Nama_Supplier }}
+                            {{ $b->supplier->Nama_Supplier }}
                             @endif
                         <td>
-                            <a href="/Bahanbaku/editBB/{{ $bahanbaku->ID_BahanBaku }}" class="btn btn-icon btn-primary"><i class="far fa-edit"></i></a>
-                            <a href="/Bahanbaku/deleteBB/{{ $bahanbaku->ID_BahanBaku }}" class="btn btn-icon btn-danger" onclick="return confirm('Apakah Yakin ingin Menghapus Data?"><i class="fas fa-times"></i></a>
+                            <a href="/Bahanbaku/editBB/{{ $b->ID_BahanBaku }}" class="btn btn-icon btn-primary"><i class="far fa-edit"></i></a>
+                            <a href="/Bahanbaku/deleteBB/{{ $b->ID_BahanBaku }}" class="btn btn-icon btn-danger" onclick="return confirm('Apakah Yakin ingin Menghapus Data?"><i class="fas fa-times"></i></a>
                         </td>
                     </tr>
                     @endforeach
                 </tbody>
             </table>
+            {{$bahanbaku -> links()}}
         </div>
 
     </div>

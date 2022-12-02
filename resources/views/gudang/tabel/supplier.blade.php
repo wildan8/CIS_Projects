@@ -23,15 +23,10 @@
     <div>
         <a href="/Supplier/createSUP" class="btn btn-icon icon-left btn-primary m-2"><i class="far fa-edit"></i> Tambah
             Data</a>
-        <a href="/Supplier/export" class="btn btn-icon icon-left btn-danger m-2"><i class="far fa-edit"></i> Export
+        <a href="/Supplier/exportSUP" class="btn btn-icon icon-left btn-danger m-2"> Export
             Data</a>
 
     </div>
-    <p>Cari Data :</p>
-    <form action="/Supplier/cari" method="GET">
-        <input type="text" name="cari" placeholder="Cari .." value="{{ old('cari') }}">
-        <input type="submit" value="CARI">
-    </form>
     <div class="section-body">
         <div class="card">
             <div class="table-responsive p-2">
@@ -48,38 +43,39 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($supplier as $supplier)
+                        @foreach ($supplier as $s)
                         <tr>
-                            <td>{{ $supplier->Kode_Supplier }}</td>
+                            <td>{{ $s->Kode_Supplier }}</td>
                             <td>
-                                @if (strlen($supplier->Nama_Supplier) > 20)
-                                {{ substr($supplier->Nama_Supplier, 0, 20) . '...' }}
+                                @if (strlen($s->Nama_Supplier) > 20)
+                                {{ substr($s->Nama_Supplier, 0, 20) . '...' }}
                                 @else
-                                {{ $supplier->Nama_Supplier }}
+                                {{ $s->Nama_Supplier }}
                                 @endif
                             <td>
-                                @if (strlen($supplier->Pemilik_Supplier) > 10)
-                                {{ substr($supplier->Pemilik_Supplier, 0, 10) . '...' }}
+                                @if (strlen($s->Pemilik_Supplier) > 10)
+                                {{ substr($s->Pemilik_Supplier, 0, 10) . '...' }}
                                 @else
-                                {{ $supplier->Pemilik_Supplier }}
+                                {{ $s->Pemilik_Supplier }}
                                 @endif
                             </td>
                             <td>
-                                @if (strlen($supplier->Alamat_Supplier) >= 15)
-                                {{ substr($supplier->Alamat_Supplier, 0, 15) . '...' }}
+                                @if (strlen($s->Alamat_Supplier) >= 15)
+                                {{ substr($s->Alamat_Supplier, 0, 15) . '...' }}
                                 @else
-                                {{ $supplier->Alamat_Supplier }}
+                                {{ $s->Alamat_Supplier }}
                                 @endif
-                            <td>{{ $supplier->Telp_Supplier }}</td>
+                            <td>{{ $s->Telp_Supplier }}</td>
                             <td>
-                                <a href="/Supplier/editSUP/{{ $supplier->ID_Supplier }}" class="btn btn-icon btn-primary"><i class="far fa-edit"></i></a>
+                                <a href="/Supplier/editSUP/{{ $s->ID_Supplier }}" class="btn btn-icon btn-primary"><i class="far fa-edit"></i></a>
 
-                                <a href="/Supplier/deleteSUP/{{ $supplier->ID_Supplier }}" class="btn btn-icon btn-danger" onclick="return confirm('Apakah Yakin ingin Menghapus Data?')"><i class="fas fa-trash-alt"></i></a>
+                                <a href="/Supplier/deleteSUP/{{ $s->ID_Supplier }}" class="btn btn-icon btn-danger" onclick="return confirm('Apakah Yakin ingin Menghapus Data?')"><i class="fas fa-trash-alt"></i></a>
                             </td>
                         </tr>
                         @endforeach
                     </tbody>
                 </table>
+                {{$supplier -> links()}}
             </div>
         </div>
     </div>

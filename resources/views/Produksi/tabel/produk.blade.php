@@ -38,27 +38,28 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($produk as $produk)
+                        @foreach ($produk as $p)
                         <tr>
-                            <td>{{ $produk->ID_Produk }}</td>
+                            <td>{{ $p->ID_Produk }}</td>
                             <td>
-                                @if (strlen($produk->Nama_Produk) >= 20)
-                                {{ substr($produk->Nama_Produk, 0, 20) . '...' }}
+                                @if (strlen($p->Nama_Produk) >= 20)
+                                {{ substr($p->Nama_Produk, 0, 20) . '...' }}
                                 @else
-                                {{ $produk->Nama_Produk }}
+                                {{ $p->Nama_Produk }}
                                 @endif
                             </td>
-                            <td>{{ $produk->Ukuran_Produk }}</td>
-                            <td>{{ $produk->Leadtime_Assembly }}</td>
+                            <td>{{ $p->Ukuran_Produk }}</td>
+                            <td>{{ $p->Leadtime_Assembly }}</td>
 
                             <td>
-                                <a href="/produk/editPROD/{{ $produk->ID_Produk }}" class="btn btn-icon  m-2 btn-primary"><i class="far fa-edit"></i></a>
-                                <a href="/produk/deletePROD/{{ $produk->ID_Produk }}" class="btn btn-icon  m-2 btn-danger" onclick="return confirm('Apakah Yakin ingin Menghapus Data?')"><i class="fas fa-times"></i></a>
+                                <a href="/produk/editPROD/{{ $p->ID_Produk }}" class="btn btn-icon  m-2 btn-primary"><i class="far fa-edit"></i></a>
+                                <a href="/produk/deletePROD/{{ $p->ID_Produk }}" class="btn btn-icon  m-2 btn-danger" onclick="return confirm('Apakah Yakin ingin Menghapus Data?')"><i class="fas fa-times"></i></a>
                             </td>
                         </tr>
                         @endforeach
                     </tbody>
                 </table>
+                {{$produk -> links()}}
             </div>
         </div>
     </div>

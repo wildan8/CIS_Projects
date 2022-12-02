@@ -52,6 +52,10 @@
             padding: 10px;
         }
 
+        .rincian table {
+            padding: 15px;
+        }
+
     </style>
 
 </head>
@@ -62,18 +66,24 @@
             <tr>
                 <td align="left" style="width: 35%;">
 
+                    <pre>
+
+<bold>Judul Dokumen        :</bold> {{$Judul }}
+<bold>Tanggal Pembuatan :</bold> {{$Tanggal}}
+
+                    </pre>
                 </td>
                 <td align="center">
                     <img src="logo_CIS-removebg-preview.png" alt="Logo" width="64" class="logo" />
                 </td>
-                <td align="right" style="width: 35%;">
+                <td align="right" style="width: 35%;margin:100px">
                     <h3>PT. Cahaya Indah Surgawi</h3>
                     <pre>
-                        Jl. Raya Kerobokan No.52, 
-                        Kerobokan Kelod, 
-                        Kec. Kuta Utara, 
-                        Kabupaten Badung, 
-                        Bali 80361.
+                    Jl. Raya Kerobokan No.52,
+                    Kerobokan Kelod,
+                    Kec. Kuta Utara,
+                    Kabupaten Badung,
+                    Bali 80361.
                     </pre>
                 </td>
             </tr>
@@ -81,49 +91,63 @@
         </table>
     </div>
     <center>
-        <h1>List Data Supplier</h1>
+        <h1>Laporan Payment</h1>
     </center>
     <div class="invoice">
         <div class="rincian">
             <table>
                 <tr>
                     <td align="left" style="width: 35%;">
-                        <bold>Judul:</bold> {{$Judul }} <br>
-                        <bold>Tanggal Pembuatan:</bold> {{$Tanggal}} <br>
-                        <bold>Jumlah Data:</bold> {{$Jumlah}}
+
+                        Date range : {{$start.' - '.$end}} <br>
+
                     </td>
                 </tr>
             </table>
         </div>
+
+
         <div class="invoice">
 
             <table width="95%" border="1">
                 <thead>
                     <tr>
                         <th scope="col">No</th>
-                        <th scope="col">Kode Supplier</th>
-                        <th scope="col">Nama Usaha</th>
-                        <th scope="col">Pemilik Usaha</th>
-                        <th scope="col">Alamat Usaha</th>
-                        <th scope="col">Nomor Telepon</th>
+                        <th scope="col">Kode </th>
+                        <th scope="col">Nama</th>
+                        <th scope="col">Satuan</th>
+                        <th scope="col">Jumlah</th>
+                        <th scope="col">Total</th>
+                        <th scope="col">Tanggal Payment</th>
                     </tr>
                 </thead>
                 <tbody align="center">
                     @php
                     $no =1;
                     @endphp
-                    @foreach ($data as $supplier)
+                    @foreach ($payment as $itemPayment)
+                    @if($itemPayment->MRP->BOM_ID != null)
+                    @if($itemPayment->MRP->BOM->Tipe_BOM =="BahanBaku")
                     <tr>
-                        <td>{{ $no++ }}</td>
-                        <td>{{ $supplier->Kode_Supplier }}</td>
-                        <td>{{ $supplier->Nama_Supplier }}</td>
-                        <td> {{ $supplier->Pemilik_Supplier }} </td>
-                        <td> {{ $supplier->Alamat_Supplier }} </td>
-                        <td> {{ $supplier->Telp_Supplier }} </td>
+                        <td>{{$no++}}</td>
+                        <td>{{$itemPayment->Kode_Payment }}</td>
+                        <td>{{$itemPayment->MRP->BOM ->BahanBaku->Nama_BahanBaku}}</td>
+                        <td>{{ $itemPayment->MRP->BOM->BahanBaku->Satuan_BahanBaku }}</td>
+                        <td>{{ $itemPayment->MRP->GR }}</td>
+                        <td>{{ "Rp.".  $itemPayment->MRP->BOM->BahanBaku->Harga_Satuan * $itemPayment->MRP->GR }}</td>
+                        <td>{{ $itemPayment->Tanggal_Payment }}</td>
                     </tr>
+                    @endif
+
+                    @endif
+
                     @endforeach
+
                 </tbody>
             </table>
+
         </div>
+        <hr>
+
 </body>
 </html>

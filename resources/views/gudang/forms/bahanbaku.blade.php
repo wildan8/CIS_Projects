@@ -6,7 +6,7 @@
     </div>
 
 
-    <form action="/Bahanbaku/storeBB" method="POST">
+    <form action="/Bahanbaku/storeBB" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="section-body">
             <div class="row">
@@ -21,35 +21,6 @@
                                 Isi Dengan Nama Bahan Baku.
                             </div>
                             @enderror
-                        </div>
-                        <div class="form-row col-12">
-                            <div class="form-group col-md-4">
-                                <label>Stok</label>
-                                <input type="text" class="form-control @error('Stok_BahanBaku') is-invalid @enderror" name="Stok_BahanBaku" value="{{ old('Stok_BahanBaku') }}" required>
-                                @error('Stok_BahanBaku')
-                                <div class="invalid-feedback">
-                                    Isi Dengan Stok Bahan Baku.
-                                </div>
-                                @enderror
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label>Satuan Bahan Baku</label>
-                                <input type="text" class="form-control @error('Satuan_BahanBaku') is-invalid @enderror" name="Satuan_BahanBaku" value="{{ old('Satuan_BahanBaku') }}" required>
-                                @error('Satuan_BahanBaku')
-                                <div class="invalid-feedback">
-                                    Isi Dengan Satuan Bahan Baku.
-                                </div>
-                                @enderror
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label>Leadtime Bahan Baku (hari)</label>
-                                <input type="text" class="form-control @error('Leadtime_BahanBaku') is-invalid @enderror" name="Leadtime_BahanBaku" value="{{ old('Leadtime_BahanBaku') }}" required>
-                                @error('Leadtime_BahanBaku')
-                                <div class="invalid-feedback">
-                                    Isi Dengan waktu tunggu hari Bahan Baku.
-                                </div>
-                                @enderror
-                            </div>
                         </div>
 
                         <div class="form-group col-12">
@@ -69,6 +40,20 @@
                                 <option value="{{ $s->ID_Supplier }}">{{ $s->Nama_Supplier }}</option>
                                 @endforeach
                             </select>
+                        </div>
+                        <div class="form-group row mb-4">
+                            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Foto Bahan Baku</label>
+                            <div class="col-sm-12 col-md-7">
+                                <div id="image-preview" class="image-preview">
+                                    <label for="image-upload" id="image-label">Choose File</label>
+                                    <input type="file" name="image" class="form-control @error('image') is-invalid @enderror" id="image-upload" />
+                                    @error('image')
+                                    <div class="invalid-feedback">
+                                        {{$message}}
+                                    </div>
+                                    @enderror
+                                </div>
+                            </div>
                         </div>
                         <div class="form-group col-12">
                             <div class="buttons">

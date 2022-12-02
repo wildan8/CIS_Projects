@@ -36,4 +36,8 @@ class MRP extends Model
     {
         return $this->belongsTo(BOM::class, 'BOM_ID');
     }
+    public function Payments()
+    {
+        return $this->hasOne(Payments::class);
+    }
 }

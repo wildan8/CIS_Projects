@@ -4,9 +4,7 @@
     <div class="section-header">
         <h1>Data Master BOM</h1>
     </div>
-    <div>
-        <a href="/BOM/createBOM" class="btn btn-icon icon-left m-2 btn-primary"><i class="far fa-edit"></i> Tambah Data</a>
-    </div>
+
     <div class="section-body">
         <div class="card">
             <div class="table-responsive p-2">
@@ -31,6 +29,7 @@
                         @endforeach
                     </tbody>
                 </table>
+                {{$Produk -> links()}}
             </div>
         </div>
     </div>

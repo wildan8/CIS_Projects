@@ -2,11 +2,17 @@
 @section('content')
 <section class="section">
     <div class="section-header">
-        <h1>Kebutuhan Bahan Baku</h1>
+        <h1>Progres Pesanan</h1>
     </div>
 
     <div class="section-body">
-        <form action="/Gudang" method="get">
+
+
+        {{-- <div>
+            <a href="/MRP/exportAll" class="btn btn-icon icon-left  btn-danger m-2"><i class="far fa-edit"></i> Export
+                Data</a>
+        </div> --}}
+        <form action="/Admin" method="get">
             <div class="input-group mb-3 col-md-4 float-right">
                 <input type="text" id="created_at" name="date" class="form-control">
                 <div class="input-group-append">
@@ -21,41 +27,42 @@
                     <thead>
                         <tr>
                             <th scope="col">Kode</th>
-                            <th scope="col">Nama </th>
-                            <th scope="col">Satuan </th>
+                            <th scope="col">Nama Produk</th>
+                            <th scope="col">Ukuran</th>
                             <th scope="col">Jumlah</th>
-                            <th scope="col">Tanggal Pesan</th>
-                            <th scope="col">Tanggal Selesai</th>
+                            <th scope="col">tanggal Pesan</th>
                             <th scope="col">Status</th>
                             <th scope="col">aksi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($mrp as $itemMRP)
-                        @if($itemMRP->BOM_ID != null)
-                        @if($itemMRP->BOM->Tipe_BOM =="BahanBaku")
+                        @foreach ($mpsON as $item)
                         <tr>
-                            <td>{{$itemMRP->Kode_MRP }}</td>
-                            <td>{{$itemMRP->BOM ->BahanBaku->Nama_BahanBaku}}</td>
-                            <td>{{ $itemMRP->BOM->BahanBaku->Satuan_BahanBaku }}</td>
-                            <td>{{ $itemMRP->GR }}</td>
-                            <td>{{ $itemMRP->Tanggal_Pesan }}</td>
-                            <td>{{ $itemMRP->Tanggal_Selesai }}</td>
-                            <td>{{ $itemMRP->status }}</td>
+
+                            <td>{{ $item->Kode_MPS }}</td>
+                            <td>{{ $item->Produk->Nama_Produk ?? '-' }}</td>
+                            <td>{{ $item->Produk->Ukuran_Produk }}</td>
+                            <td>{{ $item->Jumlah_MPS }}</td>
+                            <td>{{ $item->Tanggal_MPS }}</td>
                             <td>
-                                <a href="/Gudang/proses/{{$itemMRP->ID_MRP}}" class="btn btn-icon btn-primary"><i class="fa fa-check"></i></a>
+                                @if ($item ->status == 'Payment-Success')
+                                <div class="badge badge-primary">{{ $item ->status }}</div>
+                                @elseif($item ->status == 'On-Progress')
+                                <div class="badge badge-info">{{ $item ->status }}</div>
+                                @elseif($item ->status == 'Production')
+                                <div class="badge badge-warning">{{ $item ->status }}</div>
+                                @elseif($item ->status == 'Done')
+                                <div class="badge badge-success">{{ $item ->status }}</div>
+                                @endif
+                            </td>
+                            <td>
+                                <a href="/MRP/showMRP/{{$item->ID_MPS}}" class="btn btn-icon  m-2 btn-primary"><i class="far fa-eye"></i></a>
 
                             </td>
                         </tr>
-                        @endif
-
-                        @endif
                         @endforeach
-
                     </tbody>
-
                 </table>
-                {{$mrp -> links()}}
             </div>
         </div>
     </div>
@@ -77,7 +84,7 @@
         let end = moment().endOf('month')
 
         //KEMUDIAN TOMBOL EXPORT PDF DI-SET URLNYA BERDASARKAN TGL TERSEBUT
-        $('#exportpdf').attr('href', '/Gudang/kebutuhanPDF/' + start.format('YYYY-MM-DD') + '+' + end.format('YYYY-MM-DD'))
+        $('#exportpdf').attr('href', '/MRP/exportAll/' + start.format('YYYY-MM-DD') + '+' + end.format('YYYY-MM-DD'))
 
         //INISIASI DATERANGEPICKER
         $('#created_at').daterangepicker({
@@ -85,7 +92,7 @@
             , endDate: end
         }, function(first, last) {
             //JIKA USER MENGUBAH VALUE, MANIPULASI LINK DARI EXPORT PDF
-            $('#exportpdf').attr('href', '/Gudang/kebutuhanPDF/' + first.format('YYYY-MM-DD') + '+' + last.format('YYYY-MM-DD'))
+            $('#exportpdf').attr('href', '/MRP/exportAll/' + first.format('YYYY-MM-DD') + '+' + last.format('YYYY-MM-DD'))
         })
     })
 

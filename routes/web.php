@@ -28,10 +28,16 @@ Route::POST('/Login', 'LoginController@store');
 
 // Gudang Route Start//
 Route::middleware(['auth', 'role:Gudang'])->group(function () {
-    Route::get('/Gudang', function () {
-        return view('gudang.home');
-        // Supplier Route Start
-    });
+    Route::get('/Gudang', 'BahanBakuController@Gudang')->name('Gudang');
+    Route::get('/GudangPer', 'BahanBakuController@filter')->name('filter');
+    // Route::get('/GudangPerPesanan', 'BahanBakuController@GudangPer')->name('GudangPer');
+    Route::get('/Gudang/proses/{ID_MRP}', 'BahanBakuController@proses')->name('proses');
+    Route::get('/Gudang/kebutuhanPDF/{daterange}', 'BahanBakuController@kebutuhanPDF')->name('kebutuhanPDF');
+    Route::get('/Gudang/showPesanan/{ID_MPS}', 'BahanBakuController@showPesanan')->name('showPesanan');
+    Route::get('/Gudang/export/{ID_MPS}', 'BahanBakuController@exportFirst')->name('exportFirst');
+    Route::get('/Gudang/exportAll/{daterange}', 'BahanBakuController@exportAll')->name('exportAll');
+    // Supplier Route Start
+
     Route::get('/Laporan', function () {
         return view('Laporan.BahanBaku');
         // Supplier Route Start
@@ -41,7 +47,7 @@ Route::middleware(['auth', 'role:Gudang'])->group(function () {
         Route::get('/createSUP', 'SupplierController@create')->name('create');
         Route::POST('/storeSUP', 'SupplierController@store')->name('store');
         Route::get('/editSUP/{ID_Supplier}', 'SupplierController@edit')->name('edit');
-        Route::get('/export', 'SupplierController@PDF')->name('export');
+        Route::get('/exportSUP', 'SupplierController@PDF')->name('export');
         Route::get('/cari', 'SupplierController@cari')->name('cari');
         Route::POST('/updateSUP', 'SupplierController@update')->name('update');
         Route::get('/deleteSUP/{ID_Supplier}', 'SupplierController@destroy')->name('destroy');
@@ -53,6 +59,7 @@ Route::middleware(['auth', 'role:Gudang'])->group(function () {
         Route::get('/createBB', 'BahanBakuController@create')->name('create');
         Route::POST('/storeBB', 'BahanBakuController@store')->name('store');
         Route::get('/editBB/{ID_BahanBaku}', 'BahanBakuController@test')->name('test');
+
         Route::get('/export', 'BahanBakuController@PDF')->name('export');
         Route::POST('/perbaru', 'BahanBakuController@update')->name('update');
         Route::get('/deleteBB/{ID_BahanBaku}', 'BahanBakuController@destroy')->name('destroy');
@@ -64,7 +71,7 @@ Route::middleware(['auth', 'role:Gudang'])->group(function () {
         Route::get('/createLOG', 'PenerimaanController@create')->name('create');
         Route::POST('/storeLOG', 'PenerimaanController@store')->name('store');
         Route::get('/editLOG/{ID_LOG}', 'PenerimaanController@edit')->name('edit');
-        Route::get('/export', 'PenerimaanController@PDF')->name('export');
+        Route::get('/export/{daterange}', 'PenerimaanController@PDF')->name('export');
         Route::POST('/updateLOG', 'PenerimaanController@update')->name('update');
         Route::get('/deleteLOG/{ID_LOG}', 'PenerimaanController@destroy')->name('destroy');
     });
@@ -75,9 +82,15 @@ Route::middleware(['auth', 'role:Gudang'])->group(function () {
 
 // Produksi Route Start//
 Route::middleware(['auth', 'role:Produksi'])->group(function () {
-    Route::get('/Produksi', function () {
-        return view('Produksi.home');
-    });
+    Route::get('/Produksi', 'ProdukController@Home')->name('Home');
+    Route::get('/ProduksiDone', 'ProdukController@ProduksiDone')->name('ProduksiDone');
+    Route::get('/Produksi/exportAll/{daterange}', 'ProdukController@exportAll')->name('exportAll');
+    Route::get('/Produksi/exportAllDone/{daterange}', 'ProdukController@exportAllDone')->name('exportAllDone');
+    Route::get('/Produksi/exportFirst/{ ID_MPS }', 'ProdukController@exportFirst')->name('exportFirst');
+    Route::get('/PROD/showPROD/{ID_MPS}', 'ProdukController@show')->name('show');
+    Route::get('/PROD/accPROD/{ID_MPS}', 'ProdukController@accept')->name('accept');
+    // Route::get('/exportPDF/{daterange}', 'ProdukController@exportPDF')->name('exportPDF');
+
     //Produk Route Start
     Route::prefix('produk')->group(function () {
         Route::get('/', 'ProdukController@index')->name('index');
@@ -107,9 +120,7 @@ Route::middleware(['auth', 'role:Produksi'])->group(function () {
 // Admin route start
 
 Route::middleware(['auth', 'role:Admin'])->group(function () {
-    // Route::get('/Admin', function () {
-    //     return view('Admin.tabel.MRP');
-    // });
+    Route::get('/Admin', 'MRPController@filter')->name('filter');
 
     //MPS Route Start
     Route::prefix('MPS')->group(function () {
@@ -117,6 +128,7 @@ Route::middleware(['auth', 'role:Admin'])->group(function () {
         Route::get('/createMPS', 'MPSController@create')->name('create');
         Route::POST('/createMPS/fetchProduk', 'MPSController@fetchProduk')->name('fetchProduk');
         Route::POST('/storeMPS', 'MPSController@store')->name('store');
+        Route::get('/export/{daterange}', 'MPSController@export')->name('export');
         Route::get('/editMPS/{ID_MPS}', 'MPSController@edit')->name('edit');
         Route::POST('/updateMPS', 'MPSController@update')->name('update');
         Route::get('/deleteMPS/{ID_MPS}', 'MPSController@destroy')->name('destroy');
@@ -125,22 +137,31 @@ Route::middleware(['auth', 'role:Admin'])->group(function () {
     //MPS Route Start
     Route::prefix('MRP')->group(function () {
         Route::get('/', 'MRPController@index')->name('index');
-        Route::get('/createMRP', 'MRPController@create')->name('create');
-        Route::POST('/createMRP/fetchProduk', 'MRPController@fetchProduk')->name('fetchProduk');
         Route::get('/storeMRP/{ID_MPS}', 'MRPController@store')->name('store');
-        Route::get('/editMRP/{ID_MRP}', 'MRPController@edit')->name('edit');
-        Route::POST('/updateMRP', 'MRPController@update')->name('update');
-        Route::get('/deleteMRP/{ID_MRP}', 'MPSController@destroy')->name('destroy');
+        Route::get('/showMRP/{ID_MPS}', 'MRPController@show')->name('show');
+        Route::get('/deleteMRP/{ID_MPS}', 'MRPController@destroy')->name('destroy');
+        Route::get('/export/{ID_MPS}', 'MRPController@exportFirst')->name('exportFirst');
+        Route::get('/exportAll/{daterange}', 'MRPController@exportAll')->name('exportAll');
     });
     //MPS Route End
 });
 // Admin Route End
+// Admin route start
 
-Route::get('/ReturnProduk', 'ReturnProdukController@index');
+Route::middleware(['auth', 'role:Payment'])->group(function () {
 
-Route::get('/Payment', 'PaymentsController@index');
+    //MPS Route Start
+    Route::prefix('Payment')->group(function () {
+        Route::get('/', 'PaymentsController@index')->name('index');
+        Route::get('/PaymentProcess', 'PaymentsController@edit')->name('edit');
 
-// FIX ROUTE END //
-Route::get('/Return/createRET', function () {return view('gudang.forms.return');});
-Route::get('/Penerimaan/editTRM', function () {return view('gudang.edits.penerimaan');});
-Route::get('/Return/editRET', function () {return view('gudang.edits.return');});
+        Route::get('/createPAY/{ID_MRP}', 'PaymentsController@store')->name('store');
+        Route::get('/deletePAY/{ID_Payment}', 'PaymentsController@destroy')->name('destroy');
+        Route::get('/exportPDF/{daterange}', 'PaymentsController@exportPDF')->name('exportPDF');
+        Route::get('/search', 'PaymentsController@search')->name('search');
+
+    });
+    //MPS Route End
+
+});
+// Admin Route End

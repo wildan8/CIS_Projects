@@ -43,7 +43,7 @@ class SupplierController extends Controller
             'Nama_Supplier' => 'required|max:255|unique:suppliers,Nama_Supplier',
             'Pemilik_Supplier' => 'required|regex: /^[a-zA-Z .]*$/|',
             'Alamat_Supplier' => 'required|max:255',
-            'Telp_Supplier' => 'required|max:12',
+            'Telp_Supplier' => 'required|max:12|regex: /^[0-9]*$/',
         ]);
 
         $Kode_Supplier = Helper::IDGenerator(new Supplier, 'ID_Supplier', 'Kode_Supplier', 2, 'SUP');

@@ -23,9 +23,9 @@ class mrpController extends Controller
     public function index()
     {
 
-        $mpsW = MPS::with('Produk')->where('status', '=', 'waiting')->get();
-        $mpsON = MPS::with('Produk')->where('status', '!=', 'Waiting')->get();
-        $mrp = MRP::with('MPS', 'Produk', 'BOM')->get();
+        $mpsW = MPS::with('Produk')->where('status', '=', 'waiting')->paginate(10);
+        $mpsON = MPS::with('Produk')->where('status', '!=', 'Waiting')->paginate(10);
+        $mrp = MRP::with('MPS', 'Produk', 'BOM')->paginate(10);
 
         return view('Admin.tabel.MRP', compact('mpsW', 'mpsON', 'mrp'));
     }
@@ -80,7 +80,7 @@ class mrpController extends Controller
             if ($Bo->Tipe_BOM == "BahanBaku") {
                 $BB = BahanBaku::where('ID_BahanBaku', '=', $Bo->BahanBaku_ID)->first();
                 $NR = $POR = $POREL = $GR = $Bo->Jumlah_BOM * $ID_MPS->Jumlah_MPS;
-                $OHI = $BB->Stok_BahanBaku;
+                $OHI = 0;
                 $dateStart = $ID_MPS->Tanggal_MPS;
                 $count = 0;
                 $itung = $GR;
@@ -145,7 +145,7 @@ class mrpController extends Controller
                 'Tanggal_Selesai' => $dateDone,
                 'GR' => $GR,
                 'SR' => 0,
-                'OHI' => $OHI,
+                'OHI' => 0,
                 'NR' => $NR,
                 'POR' => $POR,
                 'POREL' => $POREL,
@@ -190,7 +190,7 @@ class mrpController extends Controller
                 'Tanggal_Selesai' => $date,
                 'GR' => $GR,
                 'SR' => 0,
-                'OHI' => $OHI,
+                'OHI' => 0,
                 'NR' => $NR,
                 'POR' => $POR,
                 'POREL' => $POREL,

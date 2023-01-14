@@ -36,12 +36,12 @@
                         @if($itemMRP->BOM->Tipe_BOM =="BahanBaku")
                         <tr>
                             <td>{{$itemMRP->Kode_MRP }}</td>
-                            <td>{{$itemMRP->BOM ->BahanBaku->Nama_BahanBaku}}</td>
-                            <td>{{ $itemMRP->BOM->BahanBaku->Satuan_BahanBaku }}</td>
-                            <td>{{ $itemMRP->GR }}</td>
-                            <td>{{ $itemMRP->Tanggal_Pesan }}</td>
-                            <td>{{ $itemMRP->Tanggal_Selesai }}</td>
-                            <td>{{ $itemMRP->status }}</td>
+                            <td>{{$itemMRP->BOM ->BahanBaku->Nama_BahanBaku?? '-'}}</td>
+                            <td>{{ $itemMRP->BOM->BahanBaku->Satuan_BahanBaku?? '-' }}</td>
+                            <td>{{ $itemMRP->GR?? '-' }}</td>
+                            <td>{{ $itemMRP->Tanggal_Pesan?? '-' }}</td>
+                            <td>{{ $itemMRP->Tanggal_Selesai?? '-' }}</td>
+                            <td>{{ $itemMRP->status?? '-' }}</td>
                             <td>
                                 <a href="/Gudang/proses/{{$itemMRP->ID_MRP}}" class="btn btn-icon btn-primary"><i class="fa fa-check"></i></a>
 

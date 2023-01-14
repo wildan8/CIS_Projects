@@ -34,7 +34,7 @@
                     <tr>
                         <th scope="col">Kode</th>
                         <th scope="col">Nama</th>
-                        <th scope="col">Stok</th>
+
                         <th scope="col">satuan</th>
                         <th scope="col">harga Satuan</th>
                         <th scope="col">Lead Time</th>
@@ -45,6 +45,10 @@
                 <tbody>
                     @foreach ($bahanbaku as $b)
                     <tr>
+
+                        {{-- <td>
+                            {{$b->image}}
+                        </td> --}}
                         <td>{{ $b->Kode_BahanBaku }}</td>
                         <td>
                             @if (strlen($b->Nama_BahanBaku) > 20)
@@ -53,7 +57,7 @@
                             {{ $b->Nama_BahanBaku }}
                             @endif
                         </td>
-                        <td>{{ $b->Stok_BahanBaku }}</td>
+
                         <td>{{$b->Satuan_BahanBaku}}</td>
                         <td>{{ $b->Harga_Satuan }}</td>
                         <td>{{$b->Leadtime_BahanBaku}}</td>

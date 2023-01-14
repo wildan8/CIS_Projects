@@ -18,8 +18,6 @@ use Illuminate\Support\Facades\Route;
 // FIX ROUTE START //
 
 // Route::get('/login-page', function () {return view('Login.auth-login');});
-Route::get('/Register', 'RegisterController@index');
-Route::POST('/Register', 'RegisterController@store');
 
 Route::POST('/Logout', 'LoginController@logout');
 
@@ -144,6 +142,12 @@ Route::middleware(['auth', 'role:Admin'])->group(function () {
         Route::get('/exportAll/{daterange}', 'MRPController@exportAll')->name('exportAll');
     });
     //MPS Route End
+    // Register start
+    Route::prefix('Register')->group(function () {
+        Route::get('/', 'RegisterController@index');
+        Route::POST('/', 'RegisterController@store');
+    });
+    // Register End
 });
 // Admin Route End
 // Admin route start

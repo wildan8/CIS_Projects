@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id('ID_Payment');
             $table->string('Kode_Payment');
             $table->bigInteger('MRP_ID')->unsigned();
-            $table->float('Harga_Payment')->default(0);
+            $table->float('Harga_Payment', 20, 2);
             $table->date('Tanggal_Payment');
             $table->timestamps();
         });

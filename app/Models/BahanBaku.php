@@ -11,7 +11,7 @@ class BahanBaku extends Model
     protected $primaryKey = 'ID_BahanBaku';
     protected $guarded = ['ID_BahanBaku', 'timestamps'];
     protected $fillable = ['Nama_BahanBaku', 'Kode_BahanBaku', 'image', 'Satuan_BahanBaku', 'Leadtime_BahanBaku', 'Harga_Satuan', 'Supplier_ID'];
-
+    public const UPLOAD_DIR = 'uploads';
     public function Supplier()
     {
         return $this->belongsTo(Supplier::class, 'Supplier_ID');

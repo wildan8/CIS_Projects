@@ -63,7 +63,8 @@
             <!-- Sidebar Admin Start -->
             <li class="{{ (request()->is('/Admin/MPS')) ? 'active' : '' }}"><a class="nav-link" href="/MPS"><i class="far fa-square"></i> <span>Master
                         MPS</span></a></li>
-            <li class="active"><a class="nav-link" href="/MRP"><i class="far fa-square"></i> <span>Hitung MRP</span></a></li>
+            <li class="{{ (request()->is('/Admin/register')) ? 'active' : '' }}"><a class="nav-link" href="/Register"><i class="far fa-square"></i> <span>Register</span></a></li>
+            {{-- <li class="active"><a class="nav-link" href="/MRP"><i class="far fa-square"></i> <span>Hitung MRP</span></a></li> --}}
             <!-- Sidebar Admin End -->
 
             @elseif(Auth::user()->Bagian_Karyawan== "Payment")

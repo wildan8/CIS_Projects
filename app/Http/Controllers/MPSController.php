@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Helpers\Helper;
 use App\Http\Requests\StoreMPSRequest;
 use App\Http\Requests\UpdateMPSRequest;
+use App\Models\BahanBaku;
+use App\Models\BOM;
 use App\Models\MPS;
+use App\Models\MRP;
 use App\Models\Produk;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -87,7 +90,143 @@ class MPSController extends Controller
             'Tanggal_MPS' => $request->Tanggal_MPS,
             'status' => 'Waiting',
         ]);
-        return redirect('/MPS');
+        $mpsID = DB::getPdo()->lastInsertId();
+        $mpsInsert = MPS::where('ID_MPS', '=', $mpsID)->first();
+
+        //  create MRP
+        // $Find_ID = Produk::where("ID_Produk", $ID_MPS->Produk_ID)
+        //     ->first();
+        // echo $Find_Produk;
+        $BOM = BOM::where('Kode_BOM', 'like', '%BB' . $Find_ID->ID_Produk . $Find_ID->Ukuran_Produk . '%')
+            ->orWhere('Kode_BOM', 'like', '%P' . $Find_ID->ID_Produk . $Find_ID->Ukuran_Produk . '%')
+            ->orderBy("Tipe_BOM")->get();
+        // echo '<br> test' . $BOM;
+        $Kode_MRP = Helper::IDGenerator(new MRP, 'ID_MRP', 'Kode_MRP', 2, 'MRP-' . $Find_ID->ID_Produk . $Find_ID->Ukuran_Produk . $mpsInsert->ID_MPS . '-');
+
+        foreach ($BOM as $Bo) {
+            if ($Bo->Tipe_BOM == "BahanBaku") {
+                $BB = BahanBaku::where('ID_BahanBaku', '=', $Bo->BahanBaku_ID)->first();
+                $NR = $POR = $POREL = $GR = $Bo->Jumlah_BOM * $mpsInsert->Jumlah_MPS;
+                $OHI = 0;
+                $dateStart = $mpsInsert->Tanggal_MPS;
+                $count = 0;
+                $itung = $GR;
+                $maks = 180;
+                $x = true;
+
+                while ($x == true) {
+                    if ($itung <= $maks&$itung >= 0) {
+                        $x = false;
+                        $count = $count + 1;
+                    } elseif ($itung > $maks) {
+                        $x = true;
+                        $count = $count + 1;
+                        $itung = $itung - $maks;
+                    }
+                }
+                $count = $BB->Leadtime_BahanBaku * $count;
+                $dateDone = date('Y-m-d', strtotime('+' . $count . ' days', strtotime($mpsInsert->Tanggal_MPS)));
+
+            } elseif ($Bo->Tipe_BOM == "Parts") {
+                $cek = BOM::where('Nama_Part', '=', $Bo->Nama_Part)
+                    ->where('Tipe_BOM', '=', 'BahanBaku')->count();
+                $BB = BOM::where('Nama_Part', '=', $Bo->Nama_Part)
+                    ->where('Tipe_BOM', '=', 'BahanBaku')->first();
+                $late = MRP::where('Kode_MRP', '=', $Kode_MRP)->orderByDesc('Tanggal_Selesai')->first();
+                $count = 0;
+                $itung = $GR;
+                $maks = 200;
+                $x = true;
+                while ($x == true) {
+                    if ($itung <= $maks&$itung >= 0) {
+                        $x = false;
+                        $count = $count + 1;
+                    } elseif ($itung > $maks) {
+                        $x = true;
+                        $count = $count + 1;
+                        $itung = $itung - $maks;
+                    }
+                }
+                $count = $Bo->Leadtime_BOM * $count;
+                if ($cek == 0) {
+
+                } else {
+
+                    $Bu = BahanBaku::where('ID_BahanBaku', '=', $BB->BahanBaku_ID)->first();
+                    $NR = $POR = $POREL = $GR = $Bo->Jumlah_BOM * $mpsInsert->Jumlah_MPS;
+
+                    $OHI = 0;
+                    $dateStart = $late->Tanggal_Selesai;
+                    $dateDone = date('Y-m-d', strtotime('+' . $count . ' days', strtotime($late->Tanggal_Selesai)));
+
+                }
+            } else {
+                return redirect('/MRP')->with('nullMRP', 'Perhitungan MRP Gagal! isi BOM terlebih dahulu!');
+            }
+            MRP::insert([
+                'Kode_MRP' => $Kode_MRP,
+                'MPS_ID' => $mpsInsert->ID_MPS,
+                'Produk_ID' => $Find_ID->ID_Produk,
+                'BOM_ID' => $Bo->ID_BOM,
+                'Tanggal_Pesan' => $dateStart,
+                'Tanggal_Selesai' => $dateDone,
+                'GR' => $GR,
+                'SR' => 0,
+                'OHI' => 0,
+                'NR' => $NR,
+                'POR' => $POR,
+                'POREL' => $POREL,
+                'status' => 'On-Progress',
+            ]);
+
+        }
+        // MRP Produk
+        $count = 0;
+        $itung = $mpsInsert->Jumlah_MPS;
+        $maks = 200;
+        $x = true;
+        while ($x == true) {
+            if ($itung <= $maks&$itung >= 0) {
+                $x = false;
+                $count = $count + 1;
+            } elseif ($itung > $maks) {
+                $x = true;
+                $count = $count + 1;
+                $itung = $itung - $maks;
+            }
+
+        }
+
+        $count = $Find_ID->Leadtime_Assembly * $count;
+        $NR = $POR = $POREL = $GR = $mpsInsert->Jumlah_MPS;
+        $late = MRP::where('Kode_MRP', '=', $Kode_MRP)->orderByDesc('Tanggal_Selesai')->first();
+        if ($late == null) {
+            return redirect('/MRP')->with('nullMRP', 'Perhitungan MRP Gagal! isi BOM terlebih dahulu!');
+        } else {
+            // dd($late);
+            $date = date('Y-m-d', strtotime('+' . $count . ' days', strtotime($late->Tanggal_Selesai)));
+            DB::table('m_p_s')
+                ->where('ID_MPS', $mpsInsert->ID_MPS)
+                ->update([
+                    'status' => 'On-Progress',
+                ]);
+            MRP::insert([
+                'Kode_MRP' => $Kode_MRP,
+                'MPS_ID' => $mpsInsert->ID_MPS,
+                'Produk_ID' => $Find_ID->ID_Produk,
+                'Tanggal_Pesan' => $late->Tanggal_Selesai,
+                'Tanggal_Selesai' => $date,
+                'GR' => $GR,
+                'SR' => 0,
+                'OHI' => 0,
+                'NR' => $NR,
+                'POR' => $POR,
+                'POREL' => $POREL,
+                'status' => 'On-Progress',
+
+            ]);
+            return redirect('/MPS')->with('statusMPS', 'Input data Berhasil!');
+        }
     }
 
     /**
@@ -132,6 +271,10 @@ class MPSController extends Controller
      */
     public function destroy(MPS $ID_MPS)
     {
+        $del = MRP::where("MPS_ID", "=", $ID_MPS->ID_MPS)->get();
+
+        $del->each->delete();
+
         $MPSDEL = MPS::find($ID_MPS);
         $MPSDEL->each->delete();
         return redirect('/MPS')->with('statusMPS', 'Hapus Data Produk Berhasil!');

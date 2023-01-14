@@ -1,4 +1,6 @@
 @extends('main')
+
+
 @section('content')
 <section class="section">
     <div class="section-header">
@@ -22,16 +24,6 @@
                             </div>
                             @enderror
                         </div>
-
-                        <div class="form-group col-12">
-                            <label>Harga Satuan</label>
-                            <input type="text" class="form-control @error('Harga_Satuan') is-invalid @enderror" name="Harga_Satuan" value="{{ old('Harga_Satuan') }}" required>
-                            @error('Harga_Satuan')
-                            <div class="invalid-feedback">
-                                Isi Dengan Harga Satuan Bahan Baku.
-                            </div>
-                            @enderror
-                        </div>
                         <div class="form-group col-12">
                             <label>Supplier</label>
                             <select class="form-control" name="Supplier_ID" id="Supplier_ID">
@@ -41,27 +33,41 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="form-group row mb-4">
-                            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Foto Bahan Baku</label>
-                            <div class="col-sm-12 col-md-7">
-                                <div id="image-preview" class="image-preview">
-                                    <label for="image-upload" id="image-label">Choose File</label>
-                                    <input type="file" name="image" class="form-control @error('image') is-invalid @enderror" id="image-upload" />
-                                    @error('image')
-                                    <div class="invalid-feedback">
-                                        {{$message}}
-                                    </div>
-                                    @enderror
+                        <div class="form-group col-12">
+                            <label>Harga Satuan</label>
+                            <input type="text" class="form-control @error('Harga_Satuan') is-invalid @enderror" name="Harga_Satuan" value="{{ old('Harga_Satuan') }}" required>
+                            @error('Harga_Satuan')
+                            <div class="invalid-feedback">
+                                Isi Dengan Harga Satuan Bahan Baku.
+                            </div>
+                            @enderror
+                        </div>
+                        <div class="form-row col-12">
+                            <div class="form-group col-md-6">
+                                <label>Satuan Bahan Baku</label>
+                                <input type="text" class="form-control @error('Satuan_BahanBaku') is-invalid @enderror" name="Satuan_BahanBaku" value="{{ old('Satuan_BahanBaku') }}" required>
+                                @error('Satuan_BahanBaku')
+                                <div class="invalid-feedback">
+                                    Isi Dengan Satuan Bahan Baku.
                                 </div>
+                                @enderror
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Leadtime Bahan Baku (hari)</label>
+                                <input type="text" class="form-control @error('Leadtime_BahanBaku') is-invalid @enderror" name="Leadtime_BahanBaku" value="{{ old('Leadtime_BahanBaku') }}" required>
+                                @error('Leadtime_BahanBaku')
+                                <div class="invalid-feedback">
+                                    Isi Dengan waktu tunggu hari Bahan Baku.
+                                </div>
+                                @enderror
                             </div>
                         </div>
+
                         <div class="form-group col-12">
                             <div class="buttons">
                                 <button type="submit" class="btn btn-primary">Simpan Data</button>
                             </div>
                         </div>
-
-
                     </div>
                 </div>
             </div>
@@ -69,3 +75,6 @@
     </form>
 </section>
 @endsection
+@push('js-internal')
+
+@endpush

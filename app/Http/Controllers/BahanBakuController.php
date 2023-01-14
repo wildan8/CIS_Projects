@@ -127,6 +127,15 @@ class BahanBakuController extends Controller
      * @param  \App\Http\Requests\StoreBahanBakuRequest  $request
      * @return \Illuminate\Http\Response
      */
+    public function _resizeImage($image, $filename, $folder)
+    {
+
+        $convertPath = $folder . "/convert/" . $filename;
+
+        $convertFile = \Image::make($image)->resize(200, 150)->stream();
+        return $convertFile;
+
+    }
     public function store(StoreBahanBakuRequest $request)
     {
         // return $request->file('image')->store('BahanBaku-images');
@@ -134,10 +143,37 @@ class BahanBakuController extends Controller
             'Nama_BahanBaku' => 'required',
             'Satuan_BahanBaku' => 'required',
             'Leadtime_BahanBaku' => 'required|integer',
-            'image' => 'image|file|max:1024',
+
             'Harga_Satuan' => 'required|integer',
             'Supplier_ID' => 'required',
         ]);
+
+        // $image = $request->file('image');
+        // $filename = $image->getClientOriginalName();
+        // $folder = BahanBaku::UPLOAD_DIR . '/images';
+        // $filePath = $image->storeAs($folder . '/original', $filename, 'public');
+        // $convertPath = $folder . "/convert/" . $filename;
+        // $convertFile = Image::make($image)->resize(200, 150)->save($convertPath);
+        // // if (\Storage::put('public/' . $convertPath, $convertFile)) {
+        // //     $convertFile->save($convertPath);
+        // // }
+
+        // dd($filePath, $convertPath);
+
+        // $image_resize = Image::make($image->getRealPath());
+        // $image_resize->resize(300, 200);
+        // $image_resize->save(public_path('images/' . $filename));
+
+        // $input['image'] = hexdec(uniqid()) . '.' . $image->extension();
+
+        // $destinationPath = public_path('/images');
+        // $imgFile = Image::make($image->getRealPath());
+        // $imgFile->resize(300, 200, function ($constraint) {
+        //     $constraint->aspectRatio();
+        // })->save($destinationPath . '/' . $input['image']);
+        // $destinationPath = public_path('/uploads');
+        // $image->move($destinationPath, $input['image']);
+
         $Kode_BahanBaku = Helper::IDGenerator(new BahanBaku, 'ID_BahanBaku', 'Kode_BahanBaku', 2, 'BB' . substr($request->Nama_BahanBaku, -2) . '-SUP' . $request->Supplier_ID);
         // dd($Kode_BahanBaku);
         BahanBaku::insert([
@@ -145,9 +181,9 @@ class BahanBakuController extends Controller
             'Nama_BahanBaku' => $request->Nama_BahanBaku,
             'Satuan_BahanBaku' => $request->Satuan_BahanBaku,
             'Leadtime_BahanBaku' => $request->Leadtime_BahanBaku,
-            'Stok_BahanBaku' => $request->Stok_BahanBaku,
             'Harga_Satuan' => $request->Harga_Satuan,
             'Supplier_ID' => $request->Supplier_ID,
+
         ]);
         return redirect('/Bahanbaku')->with('statusBahanBaku', 'Input Data Bahanbaku Berhasil!');
 

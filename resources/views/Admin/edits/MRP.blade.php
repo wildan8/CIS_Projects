@@ -61,7 +61,16 @@
                             </td>
 
                             <td>{{$item->BOM->BahanBaku->Nama_BahanBaku?? $item->BOM->Nama_Part ?? $item->Produk->Nama_Produk?? '-'}}</td>
-                            <td>{{$item->BOM->Level_BOM?? $item->Produk->Level_BOM ??'-'}}</td>
+                            <div hidden>{{$lvl = $item->BOM->Level_BOM?? $item->Produk->Level_BOM ??'-'}}</div>
+                            <td>
+                                @if($lvl == 2)
+                                Bahan Baku
+                                @elseif($lvl == 1)
+                                Part
+                                @elseif($lvl == 0)
+                                Produk
+                                @endif
+                            </td>
                             <td>{{$item->POREL??'-'}}</td>
                             <td>{{$item->Tanggal_Pesan}}</td>
                             <td>{{$item->Tanggal_Selesai}}</td>

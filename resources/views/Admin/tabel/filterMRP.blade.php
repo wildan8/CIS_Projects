@@ -2,7 +2,7 @@
 @section('content')
 <section class="section">
     <div class="section-header">
-        <h1>Progres Pesanan</h1>
+        <h1>Dashboard <i>Material Requrement Planning</i> (MRP)</h1>
     </div>
 
     <div class="section-body">
@@ -63,6 +63,7 @@
                         @endforeach
                     </tbody>
                 </table>
+                {{$mpsON -> links()}}
             </div>
         </div>
     </div>

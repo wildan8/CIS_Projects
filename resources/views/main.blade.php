@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 
     <!-- CSS Libraries -->
+    @stack('link')
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <!-- Template CSS -->
     <link href="{{ asset('/assets/css/style.css') }}" rel="stylesheet">
@@ -53,6 +54,7 @@
     <script src="{{ asset('/assets/js/scripts.js') }}"></script>
     <script src="{{ asset('/assets/js/custom.js') }}"></script>
     @stack('js-internal')
+
 
     <!-- Page Specific JS File -->
 </body>

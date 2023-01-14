@@ -2,7 +2,7 @@
 @section('content')
 <section class="section">
     <div class="section-header">
-        <h1>Data Master MPS</h1>
+        <h1>Data Master <i>Master Production Schedule</i> (MPS)</h1>
     </div>
 
     @if (session()->has('statusMPS'))
@@ -35,8 +35,11 @@
             <a target="_blank" class="btn btn-primary ml-2" id="exportpdf">Export PDF</a>
         </div>
     </form>
+
     <div class="section-body">
+
         <div class="card">
+
             <div class="table-responsive p-2">
                 <table class=" table table-striped table-md">
                     <thead>
@@ -51,31 +54,32 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($mps as $mps)
+                        @foreach ($mps as $item)
                         <tr>
-                            <td>{{ $mps->Kode_MPS }}</td>
-                            <td>{{ $mps->Produk->Nama_Produk ?? '-' }}</td>
-                            <td>{{ $mps->Ukuran_Produk }}</td>
-                            <td>{{ $mps->Jumlah_MPS }}</td>
-                            <td>{{ $mps->Tanggal_MPS }}</td>
+                            <td>{{ $item->Kode_MPS }}</td>
+                            <td>{{ $item->Produk->Nama_Produk ?? '-' }}</td>
+                            <td>{{ $item->Ukuran_Produk }}</td>
+                            <td>{{ $item->Jumlah_MPS }}</td>
+                            <td>{{ $item->Tanggal_MPS }}</td>
                             <td>
-                                @if ($mps ->status == 'Payment-Success')
-                                <div class="badge badge-primary">{{ $mps ->status }}</div>
-                                @elseif($mps ->status == 'On-Progress')
-                                <div class="badge badge-info">{{ $mps ->status }}</div>
-                                @elseif($mps ->status == 'Production')
-                                <div class="badge badge-warning">{{ $mps ->status }}</div>
-                                @elseif($mps ->status == 'Done')
-                                <div class="badge badge-success">{{ $mps ->status }}</div>
+                                @if ($item ->status == 'Payment-Success')
+                                <div class="badge badge-primary">{{ $item ->status }}</div>
+                                @elseif($item ->status == 'On-Progress')
+                                <div class="badge badge-info">{{ $item ->status }}</div>
+                                @elseif($item ->status == 'Production')
+                                <div class="badge badge-warning">{{ $item ->status }}</div>
+                                @elseif($item ->status == 'Done')
+                                <div class="badge badge-success">{{ $item ->status }}</div>
                                 @endif
                             </td>
                             <td>
-                                <a href="/MPS/deleteMPS/{{$mps->ID_MPS}}" class="btn btn-icon btn-danger" onclick="return confirm('Apakah Yakin ingin Menghapus Data?')"><i class="fas fa-times"></i></a>
+                                <a href="/MPS/deleteMPS/{{$item->ID_MPS}}" class="btn btn-icon btn-danger" onclick="return confirm('Apakah Yakin ingin Menghapus Data?')"><i class="fas fa-times"></i></a>
                             </td>
                         </tr>
                         @endforeach
                     </tbody>
                 </table>
+                {{$mps -> links()}}
             </div>
         </div>
     </div>

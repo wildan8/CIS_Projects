@@ -2,7 +2,7 @@
 @section('content')
 <section class="section">
     <div class="section-header">
-        <h1>Dashboard MRP</h1>
+        <h1>Kebutuhan Bahan Baku Selesai</h1>
     </div>
 
     <div class="section-body">
@@ -13,7 +13,7 @@
                 Data</a>
         </div> --}}
         <form action="/GudangPer" method="get">
-            <div class="input-group mb-3 col-md-4 float-right">
+            <div class="input-group mb-3 col-md-5 ml-auto">
                 <input type="text" id="created_at" name="date" class="form-control">
                 <div class="input-group-append">
                     <button class="btn btn-secondary" type="submit">Filter</button>
@@ -27,41 +27,37 @@
                     <thead>
                         <tr>
                             <th scope="col">Kode</th>
-                            <th scope="col">Nama Produk</th>
-                            <th scope="col">Ukuran</th>
+                            <th scope="col">Nama </th>
+                            <th scope="col">Satuan </th>
                             <th scope="col">Jumlah</th>
-                            <th scope="col">tanggal Pesan</th>
+                            <th scope="col">Tanggal Pesan</th>
+                            <th scope="col">Tanggal Dibutuhkan</th>
                             <th scope="col">Status</th>
-                            <th scope="col">aksi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($mpsON as $item)
+                        @foreach ($mpsON as $itemMRP)
+                        @if($itemMRP->BOM_ID != null)
+                        @if($itemMRP->Level_BOM == 2)
                         <tr>
+                            <td>{{$itemMRP->Kode_MRP }}</td>
+                            <td>{{$itemMRP->Nama_BahanBaku?? '-'}}</td>
+                            <td>{{ $itemMRP->Satuan_BahanBaku?? '-' }}</td>
+                            <td>{{ $itemMRP->sum_POREL?? '-' }}</td>
+                            <td>{{ $itemMRP->Tanggal_Pesan?? '-' }}</td>
+                            <td>{{ $itemMRP->Tanggal_Selesai?? '-' }}</td>
+                            <td>{{ $itemMRP->status?? '-' }}</td>
 
-                            <td>{{ $item->Kode_MPS }}</td>
-                            <td>{{ $item->Produk->Nama_Produk ?? '-' }}</td>
-                            <td>{{ $item->Produk->Ukuran_Produk }}</td>
-                            <td>{{ $item->Jumlah_MPS }}</td>
-                            <td>{{ $item->Tanggal_MPS }}</td>
-                            <td>
-                                @if ($item ->status == 'Payment-Success')
-                                <div class="badge badge-primary">{{ $item ->status }}</div>
-                                @elseif($item ->status == 'On-Progress')
-                                <div class="badge badge-info">{{ $item ->status }}</div>
-                                @elseif($item ->status == 'Production')
-                                <div class="badge badge-warning">{{ $item ->status }}</div>
-                                @elseif($item ->status == 'Done')
-                                <div class="badge badge-success">{{ $item ->status }}</div>
-                                @endif
-                            </td>
-                            <td>
-                                <a href="/Gudang/showPesanan/{{$item->ID_MPS}}" class="btn btn-icon  m-2 btn-primary"><i class="far fa-eye"></i></a>
-                            </td>
                         </tr>
+                        @endif
+
+                        @endif
                         @endforeach
+
                     </tbody>
+
                 </table>
+                {{$mpsON-> links()}}
             </div>
         </div>
     </div>

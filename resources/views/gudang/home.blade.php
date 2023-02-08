@@ -2,12 +2,12 @@
 @section('content')
 <section class="section">
     <div class="section-header">
-        <h1>Kebutuhan Bahan Baku</h1>
+        <h1>Permintaan Kebutuhan Bahan Baku</h1>
     </div>
 
     <div class="section-body">
         <form action="/Gudang" method="get">
-            <div class="input-group mb-3 col-md-4 float-right">
+            <div class="input-group mb-3 col-md-5 ml-auto">
                 <input type="text" id="created_at" name="date" class="form-control">
                 <div class="input-group-append">
                     <button class="btn btn-secondary" type="submit">Filter</button>
@@ -33,12 +33,12 @@
                     <tbody>
                         @foreach ($mrp as $itemMRP)
                         @if($itemMRP->BOM_ID != null)
-                        @if($itemMRP->BOM->Tipe_BOM =="BahanBaku")
+                        @if($itemMRP->Level_BOM == 2)
                         <tr>
                             <td>{{$itemMRP->Kode_MRP }}</td>
-                            <td>{{$itemMRP->BOM ->BahanBaku->Nama_BahanBaku?? '-'}}</td>
-                            <td>{{ $itemMRP->BOM->BahanBaku->Satuan_BahanBaku?? '-' }}</td>
-                            <td>{{ $itemMRP->GR?? '-' }}</td>
+                            <td>{{$itemMRP->Nama_BahanBaku?? '-'}}</td>
+                            <td>{{ $itemMRP->Satuan_BahanBaku?? '-' }}</td>
+                            <td>{{ $itemMRP->sum_POREL?? '-' }}</td>
                             <td>{{ $itemMRP->Tanggal_Pesan?? '-' }}</td>
                             <td>{{ $itemMRP->Tanggal_Selesai?? '-' }}</td>
                             <td>{{ $itemMRP->status?? '-' }}</td>

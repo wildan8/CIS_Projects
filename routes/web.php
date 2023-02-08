@@ -2,23 +2,6 @@
 // use \App\Http\Controllers\Admin\SupplierGudangController;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
- */
-
-// Route::get('/', 'LoginController@index')->middleware('guest');
-
-// FIX ROUTE START //
-
-// Route::get('/login-page', function () {return view('Login.auth-login');});
-
 Route::POST('/Logout', 'LoginController@logout');
 
 Route::get('/Login', 'LoginController@index')->name('login')->middleware('guest');
@@ -140,6 +123,7 @@ Route::middleware(['auth', 'role:Admin'])->group(function () {
         Route::get('/deleteMRP/{ID_MPS}', 'MRPController@destroy')->name('destroy');
         Route::get('/export/{ID_MPS}', 'MRPController@exportFirst')->name('exportFirst');
         Route::get('/exportAll/{daterange}', 'MRPController@exportAll')->name('exportAll');
+        Route::get('/ExcelMRP/{daterange}', 'MRPController@ExcelMRP')->name('ExcelMRP');
     });
     //MPS Route End
     // Register start

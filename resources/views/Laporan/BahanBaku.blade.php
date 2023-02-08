@@ -119,19 +119,20 @@
                     @endphp
                     @foreach ($mrp as $itemMRP)
                     @if($itemMRP->BOM_ID != null)
-                    @if($itemMRP->BOM->Tipe_BOM =="BahanBaku")
+                    @if($itemMRP->Level_BOM == 2)
+                    @if($itemMRP -> status =='Payment-Success')
                     <tr>
                         <td>{{$itemMRP->Kode_MRP }}</td>
-                        <td>{{$itemMRP->BOM ->BahanBaku->Nama_BahanBaku}}</td>
-                        <td>{{ $itemMRP->BOM->BahanBaku->Satuan_BahanBaku }}</td>
-                        <td>{{ $itemMRP->GR }}</td>
+                        <td>{{$itemMRP->Nama_BahanBaku}}</td>
+                        <td>{{ $itemMRP->Satuan_BahanBaku }}</td>
+                        <td>{{ $itemMRP->sum_POREL }}</td>
                         <td>{{ $itemMRP->Tanggal_Pesan }}</td>
                         <td>{{ $itemMRP->Tanggal_Selesai }}</td>
                         <td>{{ $itemMRP->status }}</td>
 
                     </tr>
                     @endif
-
+                    @endif
                     @endif
                     @endforeach
                 </tbody>

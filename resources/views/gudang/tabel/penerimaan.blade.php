@@ -28,7 +28,7 @@
     </div>
 
     <form action="/LOG" method="get">
-        <div class="input-group mb-3 col-md-4 float-right">
+        <div class="input-group mb-3 col-md-5 ml-auto">
             <input type="text" id="created_at" name="date" class="form-control">
             <div class="input-group-append">
                 <button class="btn btn-secondary" type="submit">Filter</button>

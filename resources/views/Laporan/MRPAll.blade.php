@@ -118,7 +118,7 @@
             <tr>
                 <td align="left" style="width: 35%;">
 
-                    [ Date range : {{$start.' - '.$end}} ] <br>
+                    [ Date range : {{$start.' Hingga '.$end}} ] <br>
 
                 </td>
             </tr>
@@ -223,41 +223,82 @@
             <thead>
                 <tr>
                     <th scope="col">No</th>
-                    <th scope="col">Kode </th>
                     <th scope="col">Nama</th>
-                    <th scope="col">Level</th>
+                    <th scope="col">Level BOM</th>
                     <th scope="col">Jumlah</th>
-                    <th scope="col">tanggal Pesan</th>
-                    <th scope="col">tanggal Selesai</th>
+                    <th scope="col">Satuan</th>
+                    <th scope="col">tanggal Dipesan</th>
+                    <th scope="col">tanggal Dibutuhkan</th>
 
                 </tr>
             </thead>
             <tbody align="center">
+
                 @php
                 $no =1;
                 @endphp
-                @foreach ($mrp as $itemMRP)
+
+                @foreach ($mrp_BB as $itemMRP)
                 @if ($itemMRP->MPS_ID == $itemMPS->ID_MPS)
                 @if ($itemMRP->BOM_ID != null)
 
                 <tr>
                     <td>{{ $no++ }}</td>
-                    <td>{{$itemMRP->Kode_MRP}}</td>
-                    <td>{{$itemMRP->BOM->BahanBaku->Nama_BahanBaku?? $itemMRP->BOM->Nama_Part ?? $itemMRP->Produk->Nama_Produk?? '-'}}</td>
-                    <td>{{$itemMRP->BOM->Level_BOM?? $itemMRP->Produk->Level_BOM ??'-'}}</td>
-                    <td>{{$itemMRP->POREL??'-'}}</td>
-                    <td>{{$itemMRP->Tanggal_Pesan}}</td>
-                    <td>{{$itemMRP->Tanggal_Selesai}}</td>
+                    <td>{{$itemMRP->Nama_BahanBaku?? $itemMRP->Nama_Part ?? $itemMRP->Nama_Produk?? '-'}}</td>
+                    {{$lvl = $itemMRP->Level_BOM?? $itemMRP->Level_BOM ??'-'}}
+                    <td>
+                        @if($lvl == 2)
+                        Bahan Baku
+                        @elseif($lvl == 1)
+                        Part
+                        @elseif($lvl == 0)
+                        Produk
+                        @endif
+                    </td>
+                    <td>{{$itemMRP->sum_POREL??'-'}}</td>
+                    <td>
+                        @if($lvl == 2)
+                        Bahan Baku
+                        @elseif($lvl == 1)
+                        Part
+                        @elseif($lvl == 0)
+                        Produk
+                        @endif
+                    </td>
+                    <td>{{$itemMRP->Tanggal_Pesan?? '-'}}</td>
+                    <td>{{$itemMRP->Tanggal_Selesai?? '-'}}</td>
                 </tr>
-                @else
+                @endif
+                @endif
+                @endforeach
+
+                @foreach ($mrp_etc as $itemMRP)
+                @if ($itemMRP->MPS_ID == $itemMPS->ID_MPS)
+
+                {{$lvl = $itemMRP->BOM->Level_BOM?? $itemMRP->Produk->Level_BOM ??'-'}}
+                @if ($lvl == 1 OR $lvl == 0)
                 <tr>
                     <td>{{ $no++ }}</td>
-                    <td>{{$itemMRP->Kode_MRP}}</td>
                     <td>{{$itemMRP->BOM->BahanBaku->Nama_BahanBaku?? $itemMRP->BOM->Nama_Part ?? $itemMRP->Produk->Nama_Produk?? '-'}}</td>
-                    <td>{{$itemMRP->BOM->Level_BOM?? $itemMRP->Produk->Level_BOM ??'-'}}</td>
+                    <td>
+                        @if($lvl == 2)
+                        Bahan Baku
+                        @elseif($lvl == 1)
+                        Part
+                        @elseif($lvl == 0)
+                        Produk
+                        @endif
+                    </td>
                     <td>{{$itemMRP->POREL??'-'}}</td>
+                    <td>
+                        @if($lvl == 1)
+                        Pcs
+                        @elseif($lvl == 0)
+                        Pcs
+                        @endif
+                    </td>
                     <td>{{$itemMRP->Tanggal_Pesan}}</td>
-                    <td>{{$itemMRP->Tanggal_Selesai}}</td>
+                    <td>{{$itemMRP->Tanggal_Selesai?? '-'}}</td>
                 </tr>
                 @endif
                 @endif
@@ -308,13 +349,13 @@
                 @if ($itemMRP->MPS_ID == $itemMPS->ID_MPS)
 
                 @if ($itemMRP->BOM_ID != null)
-                @if ( $itemMRP->BOM->Level_BOM == 2 )
+                @if ( $itemMRP->Level_BOM == 2 )
                 <tr>
                     <td>{{ $no++ }}</td>
                     <td>{{$itemMRP->Kode_MRP}}</td>
-                    <td>{{$itemMRP->BOM->BahanBaku->Nama_BahanBaku?? $itemMRP->BOM->Nama_Part ?? $itemMRP->Produk->Nama_Produk?? '-'}}</td>
-                    <td>{{$itemMRP->BOM->Level_BOM?? $itemMRP->Produk->Level_BOM ??'-'}}</td>
-                    <td>{{$itemMRP->POREL??'-'}}</td>
+                    <td>{{$itemMRP->Nama_BahanBaku?? $itemMRP->Nama_Part ?? $itemMRP->Nama_Produk?? '-'}}</td>
+                    <td>{{$itemMRP->Level_BOM?? $itemMRP->Level_BOM ??'-'}}</td>
+                    <td>{{$itemMRP->sum_POREL??'-'}}</td>
                     <td>{{$itemMRP->Tanggal_Pesan}}</td>
                     <td>{{$itemMRP->Tanggal_Selesai}}</td>
                 </tr>

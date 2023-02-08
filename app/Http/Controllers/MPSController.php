@@ -23,24 +23,36 @@ class MPSController extends Controller
      */
     public function index()
     {
-        //INISIASI 30 HARI RANGE SAAT INI JIKA HALAMAN PERTAMA KALI DI-LOAD
-        //KITA GUNAKAN STARTOFMONTH UNTUK MENGAMBIL TANGGAL 1
         $start = Carbon::now()->startOfMonth()->format('Y-m-d H:i:s');
-        //DAN ENDOFMONTH UNTUK MENGAMBIL TANGGAL TERAKHIR DIBULAN YANG BERLAKU SAAT INI
         $end = Carbon::now()->endOfMonth()->format('Y-m-d H:i:s');
-
-        //JIKA USER MELAKUKAN FILTER MANUAL, MAKA PARAMETER DATE AKAN TERISI
         if (request()->date != '') {
-            //MAKA FORMATTING TANGGALNYA BERDASARKAN FILTER USER
             $date = explode(' - ', request()->date);
             $start = Carbon::parse($date[0])->format('Y-m-d') . ' 00:00:01';
             $end = Carbon::parse($date[1])->format('Y-m-d') . ' 23:59:59';
         }
+        $mps = DB::table('m_r_p_s')
+            ->join('m_p_s', 'm_p_s.ID_MPS', '=', 'm_r_p_s.MPS_ID')
+            ->join('produks', 'produks.ID_PRODUK', '=', 'm_r_p_s.PRODUK_ID')
+            ->select(
+                'm_p_s.ID_MPS',
+                'm_p_s.Kode_MPS',
+                'm_p_s.Tanggal_MPS',
+                'm_p_s.Jumlah_MPS',
+                'm_r_p_s.POREL',
+                'm_r_p_s.MPS_ID',
+                'm_r_p_s.Produk_ID',
+                'm_r_p_s.BOM_ID',
+                'm_r_p_s.Tanggal_Pesan',
+                'm_r_p_s.Tanggal_Selesai',
+                'm_p_s.status',
+                'produks.Nama_Produk',
+                'produks.Ukuran_Produk',
 
-        //BUAT QUERY KE DB MENGGUNAKAN WHEREBETWEEN DARI TANGGAL FILTER
-        $mps = MPS::with('Produk')->whereBetween('Tanggal_MPS', [$start, $end])->paginate(10);
-
-        // dd($mps);
+            )
+            ->where('m_p_s.status', '!=', 'Waiting')
+            ->where('m_r_p_s.BOM_ID', '=', null)
+            ->whereBetween('m_p_s.Tanggal_MPS', [$start, $end])
+            ->paginate(10);
         return view('Admin.tabel.MPS', compact('mps'));
     }
 
@@ -74,14 +86,11 @@ class MPSController extends Controller
             'Ukuran_Produk' => 'required',
             'Jumlah_MPS' => 'required|integer',
             'Tanggal_MPS' => 'required|date',
-
         ]);
         $Find_ID = produk::where("Nama_Produk", $request->Produk_ID)
             ->where("Ukuran_Produk", $request->Ukuran_Produk)
             ->first();
-
         $Kode_MPS = Helper::IDGenerator(new MPS, 'ID_MPS', 'Kode_MPS', 2, 'MPS-' . $Find_ID->ID_Produk . $Find_ID->Ukuran_Produk . '-' . date('ymd'));
-
         MPS::insert([
             'Kode_MPS' => $Kode_MPS,
             'Produk_ID' => $Find_ID->ID_Produk,
@@ -92,11 +101,6 @@ class MPSController extends Controller
         ]);
         $mpsID = DB::getPdo()->lastInsertId();
         $mpsInsert = MPS::where('ID_MPS', '=', $mpsID)->first();
-
-        //  create MRP
-        // $Find_ID = Produk::where("ID_Produk", $ID_MPS->Produk_ID)
-        //     ->first();
-        // echo $Find_Produk;
         $BOM = BOM::where('Kode_BOM', 'like', '%BB' . $Find_ID->ID_Produk . $Find_ID->Ukuran_Produk . '%')
             ->orWhere('Kode_BOM', 'like', '%P' . $Find_ID->ID_Produk . $Find_ID->Ukuran_Produk . '%')
             ->orderBy("Tipe_BOM")->get();

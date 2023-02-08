@@ -22,14 +22,14 @@
                         @foreach ($mrp as $itemMRP)
 
                         @if($itemMRP->BOM_ID != null)
-                        @if($itemMRP->BOM->Tipe_BOM =="BahanBaku")
+                        @if($itemMRP->Level_BOM =="2")
 
                         <tr>
                             <td>{{ $itemMRP->Kode_MRP }}</td>
-                            <td>{{$itemMRP->BOM->BahanBaku->Nama_BahanBaku}}</td>
-                            <td>{{ $itemMRP->BOM->BahanBaku->Satuan_BahanBaku }}</td>
-                            <td>{{ $itemMRP->GR }}</td>
-                            <td>{{ "Rp.".  $itemMRP->BOM->BahanBaku->Harga_Satuan * $itemMRP->GR }}</td>
+                            <td>{{$itemMRP->Nama_BahanBaku}}</td>
+                            <td>{{ $itemMRP->Satuan_BahanBaku }}</td>
+                            <td>{{ $itemMRP->sum_POREL }}</td>
+                            <td>{{ "Rp.".  $itemMRP->Harga_Satuan * $itemMRP->sum_POREL }}</td>
                             <td>
                                 <a href="/Payment/createPAY/{{$itemMRP->ID_MRP}}" class="btn btn-icon btn-primary"><i class="fa fa-check"></i></a>
 

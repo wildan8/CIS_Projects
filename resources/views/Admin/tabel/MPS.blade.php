@@ -20,14 +20,12 @@
         {{session('updateMPS')}}
     </div>
     @endif
-    <div>
-        <a href="/MPS/createMPS" class="btn btn-icon icon-left  btn-primary m-2"><i class="far fa-edit"></i> Tambah
-            Data</a>
-        {{-- <a href="/MPS/export" class="btn btn-icon icon-left  btn-danger m-2"><i class="far fa-edit"></i> Export
+
+
+    {{-- <a href="/MPS/export" class="btn btn-icon icon-left  btn-danger m-2"><i class="far fa-edit"></i> Export
             Data</a> --}}
-    </div>
     <form action="/MPS" method="get">
-        <div class="input-group mb-3 col-md-4 float-right">
+        <div class="input-group mb-3 col-md-5 ml-auto">
             <input type="text" id="created_at" name="date" class="form-control">
             <div class="input-group-append">
                 <button class="btn btn-secondary" type="submit">Filter</button>
@@ -36,9 +34,15 @@
         </div>
     </form>
 
+
+
+
+
     <div class="section-body">
 
         <div class="card">
+            <a href="/MPS/createMPS" class="btn btn-icon icon-left  btn-primary m-2"><i class="far fa-edit"></i> Tambah
+                Data</a>
 
             <div class="table-responsive p-2">
                 <table class=" table table-striped table-md">
@@ -49,6 +53,7 @@
                             <th scope="col">Ukuran</th>
                             <th scope="col">Jumlah</th>
                             <th scope="col">tanggal Pesan</th>
+                            <th scope="col">tanggal Dibutuhkan</th>
                             <th scope="col">Status</th>
                             <th scope="col">aksi</th>
                         </tr>
@@ -57,10 +62,11 @@
                         @foreach ($mps as $item)
                         <tr>
                             <td>{{ $item->Kode_MPS }}</td>
-                            <td>{{ $item->Produk->Nama_Produk ?? '-' }}</td>
+                            <td>{{ $item->Nama_Produk ?? '-' }}</td>
                             <td>{{ $item->Ukuran_Produk }}</td>
                             <td>{{ $item->Jumlah_MPS }}</td>
                             <td>{{ $item->Tanggal_MPS }}</td>
+                            <td>{{ $item->Tanggal_Selesai }}</td>
                             <td>
                                 @if ($item ->status == 'Payment-Success')
                                 <div class="badge badge-primary">{{ $item ->status }}</div>

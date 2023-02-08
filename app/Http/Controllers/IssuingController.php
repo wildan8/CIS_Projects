@@ -56,7 +56,6 @@ class IssuingController extends Controller
             Issuing::create($validatedData);
             return redirect('/Issuing')->with('statusIssuing', 'Input Data Issuing Berhasil!');
         }
-
     }
 
     /**

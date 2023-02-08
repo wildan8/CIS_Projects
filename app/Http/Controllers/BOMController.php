@@ -140,18 +140,12 @@ class BOMController extends Controller
     public function destroyBB(BOM $ID_BOM)
     {
         $BOMDEL = BOM::find($ID_BOM);
-        // $Parts = BOM::where('Kode_BOM', 'like', '%' . $ID_Produk->ID_Produk . '%' . $ID_Produk->Ukuran_Produk . '%')
-        //     ->where('Tipe_BOM', '=', 'Parts')
-        //     ->get();
         $BOMDEL->each->delete();
         return back()->with('hapusBOM', 'Hapus Data BOM Berhasil!');
     }
     public function destroyParts(BOM $ID_BOM)
     {
         $BOMDEL = BOM::find($ID_BOM);
-        // $Parts = BOM::where('Kode_BOM', 'like', '%' . $ID_Produk->ID_Produk . '%' . $ID_Produk->Ukuran_Produk . '%')
-        //     ->where('Tipe_BOM', '=', 'Parts')
-        //     ->get();
         $BOMDEL->each->delete();
         return back()->with('hapusBOM', 'Hapus Data BOM Berhasil!');
     }

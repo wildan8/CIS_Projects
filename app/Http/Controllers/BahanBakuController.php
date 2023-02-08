@@ -33,22 +33,41 @@ class BahanBakuController extends Controller
 
     public function Gudang()
     {
-        //INISIASI 30 HARI RANGE SAAT INI JIKA HALAMAN PERTAMA KALI DI-LOAD
-        //KITA GUNAKAN STARTOFMONTH UNTUK MENGAMBIL TANGGAL 1
         $start = Carbon::now()->startOfMonth()->format('Y-m-d H:i:s');
-        //DAN ENDOFMONTH UNTUK MENGAMBIL TANGGAL TERAKHIR DIBULAN YANG BERLAKU SAAT INI
         $end = Carbon::now()->endOfMonth()->format('Y-m-d H:i:s');
-
-        //JIKA USER MELAKUKAN FILTER MANUAL, MAKA PARAMETER DATE AKAN TERISI
         if (request()->date != '') {
-            //MAKA FORMATTING TANGGALNYA BERDASARKAN FILTER USER
             $date = explode(' - ', request()->date);
             $start = Carbon::parse($date[0])->format('Y-m-d') . ' 00:00:01';
             $end = Carbon::parse($date[1])->format('Y-m-d') . ' 23:59:59';
         }
+        $mrp = DB::table('m_r_p_s')
+            ->join('m_p_s', 'm_p_s.ID_MPS', '=', 'm_r_p_s.MPS_ID')
+            ->join('boms', 'boms.ID_BOM', '=', 'm_r_p_s.BOM_ID')
+            ->join('bahan_bakus', 'bahan_bakus.ID_BahanBaku', '=', 'boms.BahanBaku_ID')
+            ->select(
+                DB::raw('SUM(m_r_p_s.POREL) as sum_POREL'),
+                'm_p_s.ID_MPS',
+                'm_r_p_s.Kode_MRP',
+                'm_r_p_s.ID_MRP',
+                'm_r_p_s.MPS_ID',
+                'm_r_p_s.Produk_ID',
+                'm_r_p_s.BOM_ID',
+                'm_r_p_s.Tanggal_Pesan',
+                'm_r_p_s.Tanggal_Selesai',
+                'm_r_p_s.status',
+                'boms.BahanBaku_ID',
+                'boms.Level_BOM',
+                'bahan_bakus.ID_BahanBaku',
+                'bahan_bakus.Nama_BahanBaku',
+                'bahan_bakus.Satuan_BahanBaku',
+                'bahan_bakus.Harga_Satuan'
+            )
+            ->where('m_r_p_s.status', '=', 'Payment-Success')
+            ->whereBetween('m_r_p_s.Tanggal_Selesai', [$start, $end])
+            ->groupBy('bahan_bakus.Nama_BahanBaku')
+            ->groupBy('m_r_p_s.Tanggal_Pesan')
+            ->paginate(10);
 
-        //BUAT QUERY KE DB MENGGUNAKAN WHEREBETWEEN DARI TANGGAL FILTER
-        $mrp = MRP::with('MPS', 'Produk', 'BOM')->where('status', '=', 'Payment-Success')->whereBetween('Tanggal_Pesan', [$start, $end])->paginate(10);
         $mpsON = MPS::with('Produk')->where('status', '!=', 'Waiting')->whereBetween('Tanggal_MPS', [$start, $end])->paginate(10);
 
         $mpsW = MPS::with('Produk')->where('status', '=', 'waiting')->get();
@@ -58,22 +77,41 @@ class BahanBakuController extends Controller
     }
     public function GudangPer()
     {
-        //INISIASI 30 HARI RANGE SAAT INI JIKA HALAMAN PERTAMA KALI DI-LOAD
-        //KITA GUNAKAN STARTOFMONTH UNTUK MENGAMBIL TANGGAL 1
         $start = Carbon::now()->startOfMonth()->format('Y-m-d H:i:s');
-        //DAN ENDOFMONTH UNTUK MENGAMBIL TANGGAL TERAKHIR DIBULAN YANG BERLAKU SAAT INI
         $end = Carbon::now()->endOfMonth()->format('Y-m-d H:i:s');
-
-        //JIKA USER MELAKUKAN FILTER MANUAL, MAKA PARAMETER DATE AKAN TERISI
         if (request()->date != '') {
-            //MAKA FORMATTING TANGGALNYA BERDASARKAN FILTER USER
             $date = explode(' - ', request()->date);
             $start = Carbon::parse($date[0])->format('Y-m-d') . ' 00:00:01';
             $end = Carbon::parse($date[1])->format('Y-m-d') . ' 23:59:59';
         }
+        $mpsON = DB::table('m_r_p_s')
+            ->join('m_p_s', 'm_p_s.ID_MPS', '=', 'm_r_p_s.MPS_ID')
+            ->join('boms', 'boms.ID_BOM', '=', 'm_r_p_s.BOM_ID')
+            ->join('bahan_bakus', 'bahan_bakus.ID_BahanBaku', '=', 'boms.BahanBaku_ID')
+            ->select(
+                DB::raw('SUM(m_r_p_s.POREL) as sum_POREL'),
+                'm_p_s.ID_MPS',
+                'm_r_p_s.Kode_MRP',
+                'm_r_p_s.ID_MRP',
+                'm_r_p_s.MPS_ID',
+                'm_r_p_s.Produk_ID',
+                'm_r_p_s.BOM_ID',
+                'm_r_p_s.Tanggal_Pesan',
+                'm_r_p_s.Tanggal_Selesai',
+                'm_r_p_s.status',
+                'boms.BahanBaku_ID',
+                'boms.Level_BOM',
+                'bahan_bakus.ID_BahanBaku',
+                'bahan_bakus.Nama_BahanBaku',
+                'bahan_bakus.Satuan_BahanBaku',
+                'bahan_bakus.Harga_Satuan'
+            )
+            ->where('m_r_p_s.status', '=', 'Payment-Success')
+            ->whereBetween('m_r_p_s.Tanggal_Selesai', [$start, $end])
+            ->groupBy('bahan_bakus.Nama_BahanBaku')
+            ->groupBy('m_r_p_s.Tanggal_Pesan')
+            ->paginate(10);
 
-        //BUAT QUERY KE DB MENGGUNAKAN WHEREBETWEEN DARI TANGGAL FILTER
-        $mrp = MRP::with('MPS', 'Produk', 'BOM')->where('status', '=', 'Payment-Success')->whereBetween('Tanggal_Pesan', [$start, $end])->paginate(10);
         $mpsON = MPS::with('Produk')->where('status', '!=', 'Waiting')->whereBetween('Tanggal_MPS', [$start, $end])->paginate(10);
 
         $mpsW = MPS::with('Produk')->where('status', '=', 'waiting')->get();
@@ -127,15 +165,7 @@ class BahanBakuController extends Controller
      * @param  \App\Http\Requests\StoreBahanBakuRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function _resizeImage($image, $filename, $folder)
-    {
 
-        $convertPath = $folder . "/convert/" . $filename;
-
-        $convertFile = \Image::make($image)->resize(200, 150)->stream();
-        return $convertFile;
-
-    }
     public function store(StoreBahanBakuRequest $request)
     {
         // return $request->file('image')->store('BahanBaku-images');
@@ -147,33 +177,6 @@ class BahanBakuController extends Controller
             'Harga_Satuan' => 'required|integer',
             'Supplier_ID' => 'required',
         ]);
-
-        // $image = $request->file('image');
-        // $filename = $image->getClientOriginalName();
-        // $folder = BahanBaku::UPLOAD_DIR . '/images';
-        // $filePath = $image->storeAs($folder . '/original', $filename, 'public');
-        // $convertPath = $folder . "/convert/" . $filename;
-        // $convertFile = Image::make($image)->resize(200, 150)->save($convertPath);
-        // // if (\Storage::put('public/' . $convertPath, $convertFile)) {
-        // //     $convertFile->save($convertPath);
-        // // }
-
-        // dd($filePath, $convertPath);
-
-        // $image_resize = Image::make($image->getRealPath());
-        // $image_resize->resize(300, 200);
-        // $image_resize->save(public_path('images/' . $filename));
-
-        // $input['image'] = hexdec(uniqid()) . '.' . $image->extension();
-
-        // $destinationPath = public_path('/images');
-        // $imgFile = Image::make($image->getRealPath());
-        // $imgFile->resize(300, 200, function ($constraint) {
-        //     $constraint->aspectRatio();
-        // })->save($destinationPath . '/' . $input['image']);
-        // $destinationPath = public_path('/uploads');
-        // $image->move($destinationPath, $input['image']);
-
         $Kode_BahanBaku = Helper::IDGenerator(new BahanBaku, 'ID_BahanBaku', 'Kode_BahanBaku', 2, 'BB' . substr($request->Nama_BahanBaku, -2) . '-SUP' . $request->Supplier_ID);
         // dd($Kode_BahanBaku);
         BahanBaku::insert([
@@ -242,30 +245,43 @@ class BahanBakuController extends Controller
     }
     public function filter()
     {
-        //INISIASI 30 HARI RANGE SAAT INI JIKA HALAMAN PERTAMA KALI DI-LOAD
-        //KITA GUNAKAN STARTOFMONTH UNTUK MENGAMBIL TANGGAL 1
         $start = Carbon::now()->startOfMonth()->format('Y-m-d H:i:s');
-        //DAN ENDOFMONTH UNTUK MENGAMBIL TANGGAL TERAKHIR DIBULAN YANG BERLAKU SAAT INI
         $end = Carbon::now()->endOfMonth()->format('Y-m-d H:i:s');
-
-        //JIKA USER MELAKUKAN FILTER MANUAL, MAKA PARAMETER DATE AKAN TERISI
         if (request()->date != '') {
-            //MAKA FORMATTING TANGGALNYA BERDASARKAN FILTER USER
             $date = explode(' - ', request()->date);
             $start = Carbon::parse($date[0])->format('Y-m-d') . ' 00:00:01';
             $end = Carbon::parse($date[1])->format('Y-m-d') . ' 23:59:59';
         }
-
-        //BUAT QUERY KE DB MENGGUNAKAN WHEREBETWEEN DARI TANGGAL FILTER
         $mrp = MRP::with('MPS', 'Produk', 'BOM')->whereBetween('Tanggal_Pesan', [$start, $end])->paginate(10);
-        $mpsON = MPS::with('Produk')->where('status', '!=', 'Waiting')->whereBetween('Tanggal_MPS', [$start, $end])->paginate(10);
-        // $payment = Payments::with('MRP')->paginate(10);
-        //KEMUDIAN LOAD VIEW
-
-        // dd($mrp);
-
+        $mpsON = DB::table('m_r_p_s')
+            ->join('m_p_s', 'm_p_s.ID_MPS', '=', 'm_r_p_s.MPS_ID')
+            ->join('boms', 'boms.ID_BOM', '=', 'm_r_p_s.BOM_ID')
+            ->join('bahan_bakus', 'bahan_bakus.ID_BahanBaku', '=', 'boms.BahanBaku_ID')
+            ->select(
+                DB::raw('SUM(m_r_p_s.POREL) as sum_POREL'),
+                'm_p_s.ID_MPS',
+                'm_p_s.Kode_MPS',
+                'm_r_p_s.Kode_MRP',
+                'm_r_p_s.ID_MRP',
+                'm_r_p_s.MPS_ID',
+                'm_r_p_s.Produk_ID',
+                'm_r_p_s.BOM_ID',
+                'm_r_p_s.Tanggal_Pesan',
+                'm_r_p_s.Tanggal_Selesai',
+                'm_r_p_s.status',
+                'boms.BahanBaku_ID',
+                'boms.Level_BOM',
+                'bahan_bakus.ID_BahanBaku',
+                'bahan_bakus.Nama_BahanBaku',
+                'bahan_bakus.Satuan_BahanBaku',
+                'bahan_bakus.Harga_Satuan'
+            )
+            ->where('m_r_p_s.status', '=', 'Payment-Success')
+            ->whereBetween('m_r_p_s.Tanggal_Selesai', [$start, $end])
+            ->groupBy('bahan_bakus.Nama_BahanBaku')
+            ->groupBy('m_r_p_s.Tanggal_Pesan')
+            ->paginate(10);
         $mpsW = MPS::with('Produk')->where('status', '=', 'waiting')->get();
-
         return view('gudang.homePesanan', compact('mpsW', 'mpsON', 'mrp'));
     }
 
@@ -309,18 +325,39 @@ class BahanBakuController extends Controller
     }
     public function exportAll(MRP $MRP, $daterange)
     {
-        $date = explode('+', $daterange); //EXPLODE TANGGALNYA UNTUK MEMISAHKAN START & END
-        //DEFINISIKAN VARIABLENYA DENGAN FORMAT TIMESTAMPS
+        $date = explode('+', $daterange);
         $start = Carbon::parse($date[0])->format('Y-m-d') . ' 00:00:01';
         $end = Carbon::parse($date[1])->format('Y-m-d') . ' 23:59:59';
         $jenis = 'ALLBB';
         $Judul = $jenis . '-ALL-LIST';
         $Tanggal = date('Y-m-d H:i:s');
-        //KEMUDIAN BUAT QUERY BERDASARKAN RANGE CREATED_AT YANG TELAH DITETAPKAN RANGENYA DARI $START KE $END
-        $mrp = MRP::with('MPS', 'Produk', 'BOM')->whereBetween('Tanggal_Pesan', [$start, $end])->get();
+        $mrp = DB::table('m_r_p_s')
+            ->join('m_p_s', 'm_p_s.ID_MPS', '=', 'm_r_p_s.MPS_ID')
+            ->join('boms', 'boms.ID_BOM', '=', 'm_r_p_s.BOM_ID')
+            ->join('bahan_bakus', 'bahan_bakus.ID_BahanBaku', '=', 'boms.BahanBaku_ID')
+            ->select(
+                DB::raw('SUM(m_r_p_s.POREL) as sum_POREL'),
+                'm_p_s.ID_MPS',
+                'm_p_s.Kode_MPS',
+                'm_r_p_s.Kode_MRP',
+                'm_r_p_s.ID_MRP',
+                'm_r_p_s.MPS_ID',
+                'm_r_p_s.Produk_ID',
+                'm_r_p_s.BOM_ID',
+                'm_r_p_s.Tanggal_Pesan',
+                'm_r_p_s.Tanggal_Selesai',
+                'm_r_p_s.status',
+                'boms.BahanBaku_ID',
+                'boms.Level_BOM',
+                'bahan_bakus.ID_BahanBaku',
+                'bahan_bakus.Nama_BahanBaku',
+                'bahan_bakus.Satuan_BahanBaku',
+                'bahan_bakus.Harga_Satuan'
+            )
+            ->groupBy('bahan_bakus.Nama_BahanBaku')
+            ->groupBy('m_p_s.ID_MPS')
+            ->get();
         $mpsON = MPS::with('Produk')->where('status', '!=', 'waiting')->whereBetween('Tanggal_MPS', [$start, $end])->get();
-
-        // dd($distTanggal);
         $Jumlah = MRP::with('MPS', 'Produk', 'BOM')->orderBy("Tanggal_pesan")
             ->count();
         $pdf = PDF::loadView('Laporan.MRPAll', compact('mrp', 'mpsON', 'Judul', 'Tanggal', 'Jumlah', 'jenis', 'start', 'end'))->setOptions(['defaultFont' => 'sans-serif']);
@@ -328,18 +365,39 @@ class BahanBakuController extends Controller
     }
     public function kebutuhanPDF($daterange)
     {
-        $date = explode('+', $daterange); //EXPLODE TANGGALNYA UNTUK MEMISAHKAN START & END
-        //DEFINISIKAN VARIABLENYA DENGAN FORMAT TIMESTAMPS
+        $date = explode('+', $daterange);
         $start = Carbon::parse($date[0])->format('Y-m-d') . ' 00:00:01';
         $end = Carbon::parse($date[1])->format('Y-m-d') . ' 23:59:59';
         $jenis = 'KEBUTUHAN';
         $Judul = $jenis . '-ALL-LIST';
         $Tanggal = date('Y-m-d H:i:s');
-        //KEMUDIAN BUAT QUERY BERDASARKAN RANGE CREATED_AT YANG TELAH DITETAPKAN RANGENYA DARI $START KE $END
-        $mrp = MRP::with('MPS', 'Produk', 'BOM')->whereBetween('Tanggal_Pesan', [$start, $end])->get();
-        $mpsON = MPS::with('Produk')->where('status', '!=', 'waiting')->whereBetween('Tanggal_MPS', [$start, $end])->get();
+        $mrp = DB::table('m_r_p_s')
+            ->join('m_p_s', 'm_p_s.ID_MPS', '=', 'm_r_p_s.MPS_ID')
+            ->join('boms', 'boms.ID_BOM', '=', 'm_r_p_s.BOM_ID')
+            ->join('bahan_bakus', 'bahan_bakus.ID_BahanBaku', '=', 'boms.BahanBaku_ID')
+            ->select(
+                DB::raw('SUM(m_r_p_s.POREL) as sum_POREL'),
+                'm_p_s.ID_MPS',
+                'm_p_s.Kode_MPS',
+                'm_r_p_s.Kode_MRP',
+                'm_r_p_s.ID_MRP',
+                'm_r_p_s.MPS_ID',
+                'm_r_p_s.Produk_ID',
+                'm_r_p_s.BOM_ID',
+                'm_r_p_s.Tanggal_Pesan',
+                'm_r_p_s.Tanggal_Selesai',
+                'm_r_p_s.status',
+                'boms.BahanBaku_ID',
+                'boms.Level_BOM',
+                'bahan_bakus.ID_BahanBaku',
+                'bahan_bakus.Nama_BahanBaku',
+                'bahan_bakus.Satuan_BahanBaku',
+                'bahan_bakus.Harga_Satuan'
+            )
+            ->groupBy('bahan_bakus.Nama_BahanBaku')
 
-        // dd($distTanggal);
+            ->get();
+        $mpsON = MPS::with('Produk')->where('status', '!=', 'waiting')->whereBetween('Tanggal_MPS', [$start, $end])->get();
         $Jumlah = MRP::with('MPS', 'Produk', 'BOM')->orderBy("Tanggal_pesan")
             ->count();
         $pdf = PDF::loadView('Laporan.BahanBaku', compact('mrp', 'mpsON', 'Judul', 'Tanggal', 'Jumlah', 'jenis', 'start', 'end'))->setOptions(['defaultFont' => 'sans-serif']);
